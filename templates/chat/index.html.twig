@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CN OpenAI{% endblock %}
+
+{% block body %}
+{{form_start(form)}}
+
+{{form_widget(form.content, 'attr': {'class': 'form-control form-control-lg'})}}
+<button type="submit">Envoyer</button>
+{{form_end(form)}}
+{% endblock %}
