@@ -1,0 +1,133 @@
+:root {
+    --color-one: rgb(44, 51, 51);
+    --color-two: rgb(46, 79, 79);
+    --color-three: rgb(14, 131, 136);
+    --color-four: rgb(203, 228, 222);
+
+}
+
+body {
+    height: 100vh;
+    max-height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 100vw;
+    margin: 0;
+    background-color: var(--color-one);
+    color: var(--color-four);
+    font-family: 'AR One Sans', sans-serif;
+}
+
+#chat-title {
+    height: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-four);
+}
+
+#title-text {
+    font-size: large;
+}
+
+#chat-title img {
+    height: 40px;
+}
+
+#messages {
+    height: 92.8vh;
+    overflow-y: scroll;
+    margin-bottom: 5vh;
+}
+
+#messages #date {
+    font-size: small;
+}
+
+#assistant {
+    background-color: #183D3D;
+    display: flex;
+    flex-direction:column;
+    align-items: end;
+    
+}
+
+#user {
+    background-color: #5C8374;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+#bottom-padding{
+    height: 9vh;
+}
+
+
+#form-chat {
+    width: 100vw;
+    position: absolute;
+    bottom: 20px;
+    background-color: transparent;
+
+}
+
+#form-inputs {
+    border-radius: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: var(--color-two);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.autosize {
+    resize: none;
+    overflow-y: auto;
+    max-height: 10vh;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    margin-left: 10px;
+    background-color: unset;
+    color: unset;
+    border: none;
+    outline: none;
+    width: 96%;
+}
+
+#sub-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    fill: var(--color-four);
+    width: 4%;
+    height: max-content;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgb(203, 228, 222, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.9);
+}
+
