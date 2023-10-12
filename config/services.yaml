@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    openai_api_key: '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'
+    openai_api_key: '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'
 
 services:
     # default configuration for services in *this* file

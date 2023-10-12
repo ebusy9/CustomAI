@@ -3,9 +3,15 @@
 {% block title %}CN OpenAI{% endblock %}
 
 {% block body %}
-{{form_start(form)}}
 
-{{form_widget(form.content, 'attr': {'class': 'form-control form-control-lg'})}}
-<button type="submit">Envoyer</button>
-{{form_end(form)}}
+
+<div id="messages">
+</div>
+
+<form method="POST" action="api/gpt" id="message-form">
+    <textarea name="message[content]" id="content" cols="30" rows="10"></textarea>
+    <input type="hidden" name="message[_token]" id="token">
+    <button type="submit" id="sub-btn">Envoyer</button>
+</form>
+
 {% endblock %}

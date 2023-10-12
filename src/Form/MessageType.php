@@ -12,9 +12,7 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('role')
             ->add('content')
-            ->add('createdAt')
         ;
     }
 
