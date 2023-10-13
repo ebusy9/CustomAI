@@ -21,8 +21,6 @@ class ChatController extends AbstractController
     #[Route('/', name: 'app_chat')]
     public function chat(): Response
     {
-        // $message = new Message();
-        // $form = $this->createForm(MessageType::class, $message);
         return $this->render('chat/index.html.twig', [
         ]);
     }
