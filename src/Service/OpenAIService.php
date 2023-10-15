@@ -27,7 +27,7 @@ class OpenAIService
     public function generateResponse(string $prompt): Message
     {
         $serializer = new Serializer([new ObjectNormalizer()], []);
-        $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], 7);
+        $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], 1);
 
         $messages = [['role' => 'system', 'content' => $this->systemMessage]];
 
@@ -63,7 +63,7 @@ class OpenAIService
 
 
 
-    public function getArrayForJsonEncode(Form $form): array
+    public function getArrayWithAllMessagesForJsonEncode(Form $form): array
     {
         $serializer = new Serializer([new ObjectNormalizer()], []);
         $messages = $this->messageRepository->findBy([], ['createdAt' => 'ASC']);
@@ -73,8 +73,6 @@ class OpenAIService
         if ($messages !== []) {
             foreach ($messages as $value) {
                 $valueArray = $serializer->normalize($value, null);
-                $valueArray['createdAt'] = date("D j M G:i:s", $valueArray['createdAt']['timestamp']);
-                unset($valueArray['id']);
                 array_push($messagesArray, $valueArray);
             }
         }
@@ -87,6 +85,19 @@ class OpenAIService
         return $chat;
     }
 
+
+    public function getArrayWithResponseForJsonEncode(Form $form, Message $assistantMessage, Message $userMessage): array
+    {
+        $serializer = new Serializer([new ObjectNormalizer()], []);
+
+        $response = [
+            'token' => $form->createView()->children['_token']->vars['value'],
+            'userMessage' => $serializer->normalize($userMessage, null),
+            'assistantMessage' => $serializer->normalize($assistantMessage, null)
+        ];
+
+        return $response;
+    }
 
 
     public function setSystemMessage(string $systemMessage): void
