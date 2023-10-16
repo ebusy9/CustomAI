@@ -6,11 +6,17 @@ const chatInput = document.querySelector('#form-inputs')
 const messageInput = document.querySelector('#content')
 const bottomPaddingDiv = document.querySelector('#bottom-padding')
 const settingsModal = document.querySelector('.modal-container')
+const modalCloseBtn = document.querySelector('.close-modal-btn')
+const modalApplyBtn = document.querySelector('.apply-modal-btn')
 const settingsBtn = document.querySelector('#settings-btn')
 const chatInputDisabledMsg = document.querySelector('#input-disabled-msg')
+const hintText = document.querySelector('.hidden-hint-text')
+const showHintBtn = document.querySelector('.show-hint-btn ')
+const modelSelect = document.querySelector('#model-select')
 const loadingGifPath = '/assets/images/loading.gif'
 let displayedMessages = []
 let isChatInputDisabled = false
+let modelSelectSet = false
 
 updateMessagesAndForm()
 
@@ -19,13 +25,28 @@ let updateMessagesAndFormInterval = setInterval(updateMessagesAndForm, 6000)
 resize(messageInput)
 
 window.addEventListener('click', (e) => {
-    if (e.target === settingsModal) {
-        settingsModal.style.display = "none"
+    console.log(e.target.clientHeight)
+})
+
+window.addEventListener('click', (e) => {
+    if (e.target === settingsModal
+        || e.target === modalCloseBtn
+        || e.target === modalApplyBtn
+        || e.target === modalApplyBtn.querySelector('svg')
+        || e.target === modalCloseBtn.querySelector('svg')
+        || e.target === modalCloseBtn.querySelector('svg').querySelector('path')
+        || e.target === modalApplyBtn.querySelector('svg').querySelector('path')) {
+        e.preventDefault()
+        settingsModal.style.display = 'none'
+        hintText.style.display = null
+        showHintBtn.style.display = null
+        showHintBtn.querySelector('svg').style.display = null
     }
 })
 
-settingsBtn.addEventListener('click', () => {
-    settingsModal.style.display = "flex"
+settingsBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    settingsModal.style.display = 'flex'
 })
 
 messageInput.addEventListener('keypress', function (e) {
@@ -41,6 +62,13 @@ submitBtn.addEventListener('click', (e) => {
 
 messageInput.addEventListener('input', () => {
     resize(messageInput)
+})
+
+showHintBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    hintText.style.display = 'block'
+    showHintBtn.style.display = 'none'
+    showHintBtn.querySelector('svg').style.display = 'none'
 })
 
 async function updateMessagesAndForm() {
@@ -60,6 +88,14 @@ async function updateMessagesAndForm() {
 function insertMessagesAndConfigureForm(response) {
     token.value = response.token
     let messagesUpdated = false
+
+    if (!modelSelectSet) {
+        modelSelectSet = true
+        response.models.forEach(model => {
+            modelSelect.innerHTML += `<option value='${model.value}'>${model.label}</option>`
+        })
+    }
+
     response.messages.forEach(message => {
         const uuid = uuidv4()
         if (displayedMessages.length === 0) {
@@ -140,17 +176,17 @@ async function submitFormUpdateMessages(event) {
         chatInputDisabledMsg.style.display = 'block'
         chatInputDisabledMsg.innerHTML = 'Please wait until the message is loaded...'
         chatInput.style.border = '1px solid #DD4A48'
-        setTimeout(()=>{
+        setTimeout(() => {
             chatInputDisabledMsg.style.display = null
             chatInput.style.border = null
         }, 4500)
         return
     }
-        if (sentMessageContent.replace(/[\r\n]/gm, '').length === 0) {
+    if (sentMessageContent.replace(/[\r\n]/gm, '').length === 0) {
         chatInputDisabledMsg.style.display = 'block'
         chatInputDisabledMsg.innerHTML = 'Message should not be empty.'
         chatInput.style.border = '1px solid #DD4A48'
-        setTimeout(()=>{
+        setTimeout(() => {
             chatInputDisabledMsg.style.display = null
             chatInput.style.border = null
         }, 4500)
@@ -182,14 +218,18 @@ function messagesLoading(messageSentContent) {
                 <div class="message-content">${messageSentContent}</div>
             </div>
             <div class="date">${getFormattedDate()}</div>
-        </div>
-        <div class="assistant-container" id="loading-assistant-container">
-            <div class="assistant">
-                <div class="message-content" id="loading-message-content"><img src="${loadingGifPath}"></div>
-            </div>
-            <div class="date" id="loading-date"><img src="${loadingGifPath}"></div>
         </div>`)
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+    setTimeout(() => {
+        bottomPaddingDiv.insertAdjacentHTML("beforebegin",
+            `<div class="assistant-container" id="loading-assistant-container">
+                <div class="assistant">
+                    <div class="message-content" id="loading-message-content"><img src="${loadingGifPath}"></div>
+                </div>
+                <div class="date" id="loading-date"><img src="${loadingGifPath}"></div>
+            </div>`)
+        messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+    }, 400)
 }
 
 function messagesLoaded(response) {
@@ -200,7 +240,10 @@ function messagesLoaded(response) {
     loadingUserDiv.id = `${response.userMessage.role}-${userUuid}`
     displayedMessages.push({
         id: response.userMessage.id,
-        uuid: userUuid, role: response.userMessage.role, timestamp: response.userMessage.createdAt.timestamp, content: response.userMessage.content
+        uuid: userUuid,
+        role: response.userMessage.role,
+        timestamp: response.userMessage.createdAt.timestamp,
+        content: response.userMessage.content
     })
 
     const assistantUuid = uuidv4()
@@ -240,6 +283,7 @@ function type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, ind
         bottomPaddingDiv.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
     } else {
         loadingMessageContentDiv.innerHTML = messageContent.slice(0, index) + '<span class="blinking-cursor">|</span>'
+        setTimeout(() => { loadingMessageContentDiv.querySelector('.blinking-cursor').remove() }, 9000)
         loadingMessageContentDiv.style.width = null
         loadingMessageContentDiv.parentElement.style.overflowX = null
         bottomPaddingDiv.style.height = null
@@ -264,6 +308,7 @@ function getFormattedDate(timestamp = Date.now() / 1000) {
     let mounth = dateArray[1]
     dateArray[1] = dateArray[2]
     dateArray[2] = mounth
+    dateArray[3] = '| ' + dateArray[3]
 
     return dateArray.join(' ')
 }

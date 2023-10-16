@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 class OpenAIService
 {
     private string $apiKey;
-    private string $systemMessage;
+    private ?string $systemMessage = null;
 
     public function __construct(
         $apiKey,
@@ -29,7 +29,11 @@ class OpenAIService
         $serializer = new Serializer([new ObjectNormalizer()], []);
         $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], 1);
 
-        $messages = [['role' => 'system', 'content' => $this->systemMessage]];
+        $messages = [];
+
+        if ($this->systemMessage !== null) {
+            $messages = [['role' => 'system', 'content' => $this->systemMessage]];
+        }
 
         if ($messagesFromDb !== []) {
             foreach ($messagesFromDb as $messageObject) {
@@ -77,12 +81,19 @@ class OpenAIService
             }
         }
 
-        $chat = [
+        $models = [];
+
+        foreach ($form->createView()->children['model']->vars['choices'] as $choice) {
+            array_push($models, ['label' => $choice->label, 'value' => $choice->value]);
+        }
+
+        $responseArray = [
             'token' => $form->createView()->children['_token']->vars['value'],
+            'models' => $models,
             'messages' => $messagesArray
         ];
 
-        return $chat;
+        return $responseArray;
     }
 
 
@@ -100,7 +111,7 @@ class OpenAIService
     }
 
 
-    public function setSystemMessage(string $systemMessage): void
+    public function setSystemMessage(?string $systemMessage): void
     {
         $this->systemMessage = $systemMessage;
     }

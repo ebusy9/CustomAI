@@ -23,6 +23,10 @@ class Message
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?OpenAIModel $model = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Message
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getModel(): ?OpenAIModel
+    {
+        return $this->model;
+    }
+
+    public function setModel(?OpenAIModel $model): static
+    {
+        $this->model = $model;
 
         return $this;
     }

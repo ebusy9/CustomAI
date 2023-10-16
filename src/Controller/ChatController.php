@@ -27,14 +27,13 @@ class ChatController extends AbstractController
     #[Route('/api/gpt', name: 'api_pgt', methods: ['GET', 'POST'])]
     public function gpt(Request $request, EntityManagerInterface $entityManager, OpenAIService $openAIService): Response
     {
-        $openAIService->setSystemMessage('');
-
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
+            dd($form->get('model')->getData());
+            $openAIService->setSystemMessage($form->get('systemMessage')->getData());
             $message->setCreatedAt(new DateTimeImmutable())
                 ->setRole('user');
             $response = $openAIService->generateResponse($form->get('content')->getData());
