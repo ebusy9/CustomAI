@@ -21,6 +21,12 @@
 				<div class="modal-body">
 					<label for="model-select">Model:</label>
 					<select name="message[model]" id="model-select"></select>
+					<label for="context-limit-input">Context Limit:</label>
+					<div class="number-input-container">
+					<button id="context-limit-input-minus">-</button>
+					<input type="number" name="message[contextLimit]" id="context-limit-input" min="0" value="0">
+					<button id="context-limit-input-plus">+</button>
+					</div>
 					<label for="system-msg-input">System message:</label>
 					<div class="textarea-container">
 						<textarea name="message[systemMessage]" id="system-msg-input" rows="2" placeholder="You are a helpful assistant..."></textarea>

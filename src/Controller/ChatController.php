@@ -32,11 +32,10 @@ class ChatController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->get('model')->getData());
             $openAIService->setSystemMessage($form->get('systemMessage')->getData());
             $message->setCreatedAt(new DateTimeImmutable())
                 ->setRole('user');
-            $response = $openAIService->generateResponse($form->get('content')->getData());
+            $response = $openAIService->generateResponse($message);
 
             $entityManager->persist($message);
             $entityManager->persist($response);

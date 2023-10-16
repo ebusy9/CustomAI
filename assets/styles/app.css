@@ -129,6 +129,87 @@ body {
     margin: 10px 20px;
 }
 
+#model-select {
+    margin: 0px 20px;
+    background-color: transparent;
+    color: var(--color-four);
+    border: 1px solid var(--color-four);
+    border-radius: 5px;
+    padding: 6px;
+    font-family: unset;
+}
+
+#model-select option {
+    background-color: var(--color-one);
+}
+
+#context-limit-input {
+    background-color: transparent;
+    color: var(--color-four);
+    border-bottom: 1px solid var(--color-four);
+    border-top: 1px solid var(--color-four);
+    padding: 7px;
+    font-family: unset;
+    outline: none;
+    text-align: center;
+    width: 60px;
+}
+
+#context-limit-input-minus,
+#context-limit-input-plus {
+    background-color: transparent;
+    color: var(--color-four);
+    border: 1px solid var(--color-four);
+    height: 34px;
+    cursor: pointer;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+#context-limit-input-minus {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-left: 20px;
+    margin-right: -5px;
+}
+
+#context-limit-input-minus:hover {
+border-color: var(--color-red);
+color: var(--color-red);
+}
+
+#context-limit-input-plus {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-left: -5px;
+}
+
+#context-limit-input-plus:hover {
+    border-color: var(--color-green);
+    color: var(--color-green);
+    }
+
+.textarea-container {
+    border-radius: 5px;
+    border: 1px solid var(--color-four);
+    margin: 0px 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+#system-msg-input {
+    resize: none;
+    background-color: transparent;
+    color: unset;
+    outline: none;
+    font-family: unset;
+    overflow-x: auto;
+    margin: 10px;
+    width: 100%;
+    border: none;
+    overflow-y: auto;
+}
+
 .modal-body .hint {
     margin: 0px 20px;
     margin-top: 3px;
@@ -156,27 +237,6 @@ body {
 
 .show-hint-btn svg {
     height: 1.2rem;
-}
-
-.textarea-container {
-    border-radius: 5px;
-    border: 1px solid var(--color-four);
-    margin: 0px 20px;
-    display: flex;
-    flex-direction: row;
-}
-
-#system-msg-input {
-    resize: none;
-    background-color: transparent;
-    color: unset;
-    outline: none;
-    font-family: unset;
-    overflow-x: auto;
-    margin: 10px;
-    width: 100%;
-    border: none;
-    overflow-y: auto;
 }
 
 .modal-footer {
@@ -444,4 +504,15 @@ body {
 
 ::-webkit-scrollbar-thumb:active {
     background: rgba(0, 0, 0, 0.9);
+}
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
 }

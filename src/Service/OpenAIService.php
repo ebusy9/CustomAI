@@ -15,6 +15,7 @@ class OpenAIService
 {
     private string $apiKey;
     private ?string $systemMessage = null;
+    private int $contextLimit = 0;
 
     public function __construct(
         $apiKey,
@@ -24,10 +25,10 @@ class OpenAIService
     }
 
 
-    public function generateResponse(string $prompt): Message
+    public function generateResponse(Message $message): Message
     {
         $serializer = new Serializer([new ObjectNormalizer()], []);
-        $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], 1);
+        $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], $this->contextLimit);
 
         $messages = [];
 
@@ -42,7 +43,7 @@ class OpenAIService
             }
         }
 
-        array_push($messages, ['role' => 'user', 'content' => $prompt]);
+        array_push($messages, ['role' => 'user', 'content' => $message->getContent()]);
 
         $client = OpenAI::factory()
             ->withApiKey($this->apiKey)
@@ -51,24 +52,28 @@ class OpenAIService
             ->make();
 
         $result = $client->chat()->create([
-            'model' => 'gpt-3.5-turbo',
+            'model' => $message
+                ->getModel()
+                ->getName(),
             'messages' => $messages
         ]);
 
         $response = $result->toArray();
 
-        $message = (new Message())
+        $responseMessageObject = (new Message())
             ->setContent($response['choices'][0]['message']['content'])
             ->setCreatedAt(new DateTimeImmutable())
-            ->setRole('assistant');
+            ->setRole('assistant')
+            ->setModel($message->getModel());
 
-        return $message;
+        return $responseMessageObject;
     }
 
 
 
     public function getArrayWithAllMessagesForJsonEncode(Form $form): array
     {
+
         $serializer = new Serializer([new ObjectNormalizer()], []);
         $messages = $this->messageRepository->findBy([], ['createdAt' => 'ASC']);
 

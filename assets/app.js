@@ -13,6 +13,9 @@ const chatInputDisabledMsg = document.querySelector('#input-disabled-msg')
 const hintText = document.querySelector('.hidden-hint-text')
 const showHintBtn = document.querySelector('.show-hint-btn ')
 const modelSelect = document.querySelector('#model-select')
+const contextLimitInput = document.querySelector('#context-limit-input')
+const contextLimitInputPlus = document.querySelector('#context-limit-input-plus')
+const contextLimitInputMinus = document.querySelector('#context-limit-input-minus')
 const loadingGifPath = '/assets/images/loading.gif'
 let displayedMessages = []
 let isChatInputDisabled = false
@@ -42,6 +45,16 @@ window.addEventListener('click', (e) => {
         showHintBtn.style.display = null
         showHintBtn.querySelector('svg').style.display = null
     }
+})
+
+contextLimitInputPlus.addEventListener('click', (e) => {
+    e.preventDefault()
+    contextLimitInput.stepUp()
+})
+
+contextLimitInputMinus.addEventListener('click', (e) => {
+    e.preventDefault()
+    contextLimitInput.stepDown()
 })
 
 settingsBtn.addEventListener('click', (e) => {
