@@ -32,7 +32,9 @@ class ChatController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $openAIService->setContextLimit($form->get('contextLimit')->getData());
             $openAIService->setSystemMessage($form->get('systemMessage')->getData());
+            $openAIService->setTemperature($form->get('temperature')->getData());
             $message->setCreatedAt(new DateTimeImmutable())
                 ->setRole('user');
             $response = $openAIService->generateResponse($message);

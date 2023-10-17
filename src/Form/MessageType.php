@@ -28,6 +28,12 @@ class MessageType extends AbstractType
                 'label' => false,
                 'constraints' => new Range(min: 0, max: 10)
             ])
+            ->add('temperature', NumberType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => false,
+                'constraints' => new Range(min: 0, max: 20)
+            ])
         ;
     }
 

@@ -16,6 +16,7 @@ class OpenAIService
     private string $apiKey;
     private ?string $systemMessage = null;
     private int $contextLimit = 0;
+    private int $temperature = 10;
 
     public function __construct(
         $apiKey,
@@ -55,7 +56,8 @@ class OpenAIService
             'model' => $message
                 ->getModel()
                 ->getName(),
-            'messages' => $messages
+            'messages' => $messages,
+            'temperature' => $this->getTemperature()
         ]);
 
         $response = $result->toArray();
@@ -119,5 +121,25 @@ class OpenAIService
     public function setSystemMessage(?string $systemMessage): void
     {
         $this->systemMessage = $systemMessage;
+    }
+
+    public function setContextLimit(int $contextLimit): void
+    {
+        $this->contextLimit = $contextLimit;
+    }
+
+    public function setTemperature(int $temperature): void 
+    {
+        $this->temperature = $temperature;
+    }
+
+    public function getTemperature(): float
+    {
+        if($this->temperature === 0)
+        {
+            return $this->temperature;
+        }
+
+        return $this->temperature / 10;
     }
 }

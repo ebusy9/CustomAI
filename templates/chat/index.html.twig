@@ -23,20 +23,34 @@
 					<select name="message[model]" id="model-select"></select>
 					<label for="context-limit-input">Context Limit:</label>
 					<div class="number-input-container">
-					<button id="context-limit-input-minus">-</button>
-					<input type="number" name="message[contextLimit]" id="context-limit-input" min="0" value="0">
-					<button id="context-limit-input-plus">+</button>
+						<button class="number-step-down-btn" id="context-limit-input-minus">-</button>
+						<input type="number" name="message[contextLimit]" class="number-input" id="context-limit-input" min="0" max="10" value="0" readonly tabindex="-1">
+						<button class="number-step-up-btn" id="context-limit-input-plus">+</button>
 					</div>
+					<p class="hint">
+						<span class="hint-first-word">Hint:</span>
+						Number of previous messages sent to the AI for context.
+					</p>
+					<label for="temperature-input">Temperature:</label>
+					<div class="number-input-container">
+						<button class="number-step-down-btn" id="temperature-input-minus">-</button>
+						<input type="number" name="message[temperature]" class="number-input" id="temperature-input" min="0" max="20" value="10" readonly tabindex="-1">
+						<button class="number-step-up-btn" id="temperature-input-plus">+</button>
+					</div>
+					<p class="hint">
+						<span class="hint-first-word">Hint:</span>
+						Higher values for randomness, lower values for focus in the output.
+					</p>
 					<label for="system-msg-input">System message:</label>
 					<div class="textarea-container">
 						<textarea name="message[systemMessage]" id="system-msg-input" rows="2" placeholder="You are a helpful assistant..."></textarea>
 					</div>
 					<p class="hint">
 						<span class="hint-first-word">Hint:</span>
-						The system message helps set the behavior of the assistant.<span class="hidden-hint-text">
+						The system message helps set the behavior of the assistant.<span id="system-msg-hidden-hint-text">
 							For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.</span>
 					</p>
-					<button class="show-hint-btn">
+					<button id="show-system-msg-hint-btn">
 						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
 					</button>
 				</div>

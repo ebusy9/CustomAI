@@ -2,7 +2,6 @@
     --color-one: rgb(27, 38, 44);
     --color-two: rgb(15, 76, 117);
     --color-three: rgb(50, 130, 184);
-    /* --color-four: rgb(187, 225, 250); */
     --color-four: rgb(225, 225, 250);
     --color-red: #DD4A48;
     --color-green: #B6E388;
@@ -121,12 +120,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: 10px;
 }
 
 .modal-body label {
     font-size: 16px;
-    margin: 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
 }
 
 #model-select {
@@ -137,15 +137,26 @@ body {
     border-radius: 5px;
     padding: 6px;
     font-family: unset;
+    appearance: none;
+    background-image: url("data:image/svg+xml,<svg width='24' height='24' fill='white' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
+    background-repeat: no-repeat;
+    background-size: 0.7em;
+    background-position-x: 97%;
+    background-position-y: center;
 }
 
 #model-select option {
     background-color: var(--color-one);
 }
 
-#context-limit-input {
+.number-input-container {
+    display: flex;
+}
+
+.number-input {
     background-color: transparent;
     color: var(--color-four);
+    border: none;
     border-bottom: 1px solid var(--color-four);
     border-top: 1px solid var(--color-four);
     padding: 7px;
@@ -153,41 +164,40 @@ body {
     outline: none;
     text-align: center;
     width: 60px;
+    cursor: default;
 }
 
-#context-limit-input-minus,
-#context-limit-input-plus {
+.number-step-down-btn,
+.number-step-up-btn {
     background-color: transparent;
     color: var(--color-four);
     border: 1px solid var(--color-four);
     height: 34px;
     cursor: pointer;
     font-size: 24px;
-    vertical-align: middle;
+    width: 30px;
 }
 
-#context-limit-input-minus {
+.number-step-down-btn {
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
     margin-left: 20px;
-    margin-right: -5px;
 }
 
-#context-limit-input-minus:hover {
-border-color: var(--color-red);
-color: var(--color-red);
+.number-step-down-btn:hover {
+    border-color: var(--color-red);
+    color: var(--color-red);
 }
 
-#context-limit-input-plus {
+.number-step-up-btn {
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
-    margin-left: -5px;
 }
 
-#context-limit-input-plus:hover {
+.number-step-up-btn:hover {
     border-color: var(--color-green);
     color: var(--color-green);
-    }
+}
 
 .textarea-container {
     border-radius: 5px;
@@ -220,22 +230,28 @@ color: var(--color-red);
     font-weight: 700;
 }
 
-.modal-body .hint .hidden-hint-text {
+#system-msg-hidden-hint-text {
     display: none;
     margin-bottom: 20px;
     animation: fill 0.6s;
-    animation-iteration-count: 1;
     overflow: hidden;
 }
 
-.show-hint-btn {
+#temperature-hidden-hint-text {
+    display: none;
+    overflow: hidden;
+}
+
+#show-system-msg-hint-btn {
     margin: 10px 0px;
     fill: var(--color-four);
     background-color: transparent;
     border: none;
+    cursor: pointer;
+    animation: arrow-blink 2s ease-out infinite;
 }
 
-.show-hint-btn svg {
+#show-system-msg-hint-btn svg {
     height: 1.2rem;
 }
 
@@ -258,6 +274,9 @@ color: var(--color-red);
     border-radius: 5px;
     cursor: pointer;
     fill: var(--color-four);
+    padding: 3px 0;
+    width: 60px;
+
 }
 
 .apply-modal-btn:hover {
@@ -267,7 +286,8 @@ color: var(--color-red);
 }
 
 .apply-modal-btn svg {
-    height: 1.2em;
+    height: 1.2rem;
+    width: 100%
 }
 
 #messages {
@@ -278,7 +298,7 @@ color: var(--color-red);
 }
 
 .message-content img {
-    height: 1.4rem;
+    height: 1rem;
 }
 
 .date img {
@@ -296,6 +316,12 @@ color: var(--color-red);
 .assistant-container .date {
     font-size: small;
     margin-right: 8px;
+}
+
+.assistant-container .openai-icon {
+    fill: var(--color-four);
+    height: 1em;
+    margin-bottom: -2px;
 }
 
 .assistant {
@@ -373,6 +399,7 @@ color: var(--color-red);
     outline: none;
     width: 100%;
     font-family: unset;
+    height: 22px;
 }
 
 #sub-btn {
@@ -434,6 +461,23 @@ color: var(--color-red);
     100% {
         translate: 0;
         opacity: 100%;
+    }
+}
+
+@keyframes arrow-blink {
+    0% {
+        translate: 0% -10%;
+        opacity: 50%;
+    }
+
+    50% {
+        translate: 0;
+        opacity: 100%;
+    }
+
+    100% {
+        translate: 0% -10%;
+        opacity: 50%;
     }
 }
 
