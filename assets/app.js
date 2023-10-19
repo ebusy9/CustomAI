@@ -107,15 +107,16 @@ async function updateMessagesAndForm() {
             return
         }
 
-        const responseData = await response.json();
+        const responseData = await response.json()
 
         if (isChatInputDisabled) {
             return
         }
 
-        insertMessagesAndConfigureForm(responseData);
+        removeWarningUpdateMsgFailed()
+        insertMessagesAndConfigureForm(responseData)
     } catch (error) {
-        console.log('Failed to update messages: ' + error)
+        warningUpdateMsgFailed()
     }
 }
 
@@ -146,12 +147,12 @@ function insertMessagesAndConfigureForm(response) {
                 content: message['content']
             }]
             bottomPaddingDiv.insertAdjacentHTML("beforebegin",
-                `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+            marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
                         <div class="message-content">${message['content']}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`)
+                </div>`))
         } else if (displayedMessages.find(object => { return object.id === message['id'] }) === undefined) {
             messagesUpdated = true
             displayedMessages.push({
@@ -177,13 +178,12 @@ function insertMessagesAndConfigureForm(response) {
 
             if (indexOfMessage === 0) {
                 messagesDiv.insertAdjacentHTML('afterbegin',
-                    `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                         <div class="${message['role']}">
                             <div class="message-content">${message['content']}</div>
                         </div>
                         <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                    </div>`)
-
+                    </div>`))
             }
 
             if (indexOfMessage > 0) {
@@ -192,12 +192,12 @@ function insertMessagesAndConfigureForm(response) {
                 const previousMessageDiv = document.querySelector(`#${displayedMessages[indexOfPreviousMessage].role}-${displayedMessages[indexOfPreviousMessage].uuid}`)
 
                 previousMessageDiv.insertAdjacentHTML('afterend',
-                    `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
                         <div class="message-content">${message['content']}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`)
+                </div>`))
             }
         }
     })
@@ -225,10 +225,10 @@ async function submitFormUpdateMessages(event) {
             body: formData
         })
 
-        const responseData = await response.json();
+        const responseData = await response.json()
 
+        removeWarningMsgFormSubmitFailed()
         messagesLoaded(responseData)
-
     } catch (error) {
         warningMsgFormSubmitFailed()
     }
@@ -238,6 +238,7 @@ async function submitFormUpdateMessages(event) {
 }
 
 function messagesLoading(messageSentContent) {
+    messageSentContent = htmlSpecialChars(messageSentContent)
     messageInput.value = ''
     resize(messageInput)
     bottomPaddingDiv.insertAdjacentHTML("beforebegin",
@@ -390,7 +391,7 @@ function resize(messageInput) {
 function verifyConditionsBeforeStubmit(sentMessageContent) {
     if (isChatInputDisabled) {
         chatInputDisabledMsg.style.display = 'block'
-        chatInputDisabledMsg.innerHTML = 'Please wait until the message is loaded...'
+        chatInputDisabledMsg.innerHTML = warningIcon + ' Please wait until the message is loaded...'
         chatInput.style.border = '1px solid #DD4A48'
         setTimeout(() => {
             chatInputDisabledMsg.style.display = null
@@ -401,7 +402,7 @@ function verifyConditionsBeforeStubmit(sentMessageContent) {
 
     if (sentMessageContent.trim() === '') {
         chatInputDisabledMsg.style.display = 'block'
-        chatInputDisabledMsg.innerHTML = 'The message should not be empty.'
+        chatInputDisabledMsg.innerHTML = warningIcon + ' The message should not be empty.'
         chatInput.style.border = '1px solid #DD4A48'
         setTimeout(() => {
             chatInputDisabledMsg.style.display = null
@@ -412,6 +413,7 @@ function verifyConditionsBeforeStubmit(sentMessageContent) {
 
     return true
 }
+
 
 function warningMsgFormSubmitFailed() {
     const loadingUserContainer = document.querySelector('#loading-user-container')
@@ -439,3 +441,34 @@ function warningMsgFormSubmitFailed() {
     userContainerDate.innerHTML = warningIcon + ' ' + userContainerDate.innerHTML
     assistantContainerDate.innerHTML = warningIcon + ' ' + getFormattedDate()
 }
+
+function removeWarningMsgFormSubmitFailed() {
+    if (document.querySelector('.loading-failed') !== null) {
+        document.querySelectorAll('.loading-failed').forEach((div) => {
+            div.parentElement.remove()
+        })
+    }
+}
+
+function warningUpdateMsgFailed() {
+    if (messagesDiv.querySelector('.user-container') === null
+        && messagesDiv.querySelector('.assistant-container') === null
+        && messagesDiv.querySelector('#update-failed-err-msg') === null) {
+        bottomPaddingDiv.insertAdjacentHTML('beforebegin', `<div id="update-failed-err-msg">${warningIcon} <p> An error occurred while loading messages. Please check your internet connection and try again.</p></div>`)
+    }
+}
+
+function removeWarningUpdateMsgFailed() {
+    const warningMessage = document.querySelector('#update-failed-err-msg')
+    if (warningMessage !== null) {
+        warningMessage.remove()
+    }
+}
+
+function htmlSpecialChars(str) {
+    return str.replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;")
+ }

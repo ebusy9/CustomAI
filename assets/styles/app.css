@@ -307,6 +307,18 @@ body {
     margin-bottom: 5vh;
 }
 
+#update-failed-err-msg {
+    text-align: center;
+    color: var(--color-red);
+    fill: var(--color-red);
+    margin-top: 20px;
+    animation: pop-modal 0.6s ease-out;
+}
+
+#update-failed-err-msg svg {
+    height: 2rem;
+}
+
 .message-content img {
     height: 1rem;
 }
@@ -323,8 +335,8 @@ body {
 }
 
 .date-loading-failed {
-color: var(--color-red) !important;
-fill: var(--color-red) !important;
+    color: var(--color-red) !important;
+    fill: var(--color-red) !important;
 }
 
 .assistant-container {
@@ -444,6 +456,7 @@ fill: var(--color-red) !important;
     margin-left: 6%;
     font-size: small;
     color: var(--color-red);
+    fill: var(--color-red);
 }
 
 .blinking-cursor {

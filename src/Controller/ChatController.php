@@ -19,8 +19,7 @@ class ChatController extends AbstractController
     #[Route('/', name: 'app_chat')]
     public function chat(): Response
     {
-        return $this->render('chat/index.html.twig', [
-        ]);
+        return $this->render('chat/index.html.twig', []);
     }
 
 
@@ -42,7 +41,7 @@ class ChatController extends AbstractController
             $entityManager->persist($message);
             $entityManager->persist($response);
             $entityManager->flush();
-            
+
             return new JsonResponse($openAIService->getArrayWithResponseForJsonEncode($form, $response, $message));
         }
 
