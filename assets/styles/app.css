@@ -319,6 +319,18 @@ body {
     height: 2rem;
 }
 
+.message-content {
+    max-width: 100%;
+}
+
+.message-content :first-child {
+    margin-top: 0px !important;
+}
+
+.message-content :last-child {
+    margin-bottom: 0px !important;
+}
+
 .message-content img {
     height: 1rem;
 }

@@ -147,12 +147,13 @@ function insertMessagesAndConfigureForm(response) {
                 content: message['content']
             }]
             bottomPaddingDiv.insertAdjacentHTML("beforebegin",
-            marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                    `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
-                        <div class="message-content">${message['content']}</div>
+                        <div class="message-content">${marked.parse(message['content'])}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`))
+                </div>`)
+                // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
         } else if (displayedMessages.find(object => { return object.id === message['id'] }) === undefined) {
             messagesUpdated = true
             displayedMessages.push({
@@ -178,12 +179,13 @@ function insertMessagesAndConfigureForm(response) {
 
             if (indexOfMessage === 0) {
                 messagesDiv.insertAdjacentHTML('afterbegin',
-                marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                        `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                         <div class="${message['role']}">
-                            <div class="message-content">${message['content']}</div>
+                            <div class="message-content">${marked.parse(message['content'])}</div>
                         </div>
                         <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                    </div>`))
+                    </div>`)
+                    // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
             }
 
             if (indexOfMessage > 0) {
@@ -192,12 +194,13 @@ function insertMessagesAndConfigureForm(response) {
                 const previousMessageDiv = document.querySelector(`#${displayedMessages[indexOfPreviousMessage].role}-${displayedMessages[indexOfPreviousMessage].uuid}`)
 
                 previousMessageDiv.insertAdjacentHTML('afterend',
-                marked.parse(`<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
-                        <div class="message-content">${message['content']}</div>
+                        <div class="message-content">${marked.parse(message['content'])}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`))
+                </div>`)
+                // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
             }
         }
     })
