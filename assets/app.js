@@ -149,11 +149,10 @@ function insertMessagesAndConfigureForm(response) {
             bottomPaddingDiv.insertAdjacentHTML("beforebegin",
                     `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
-                        <div class="message-content">${marked.parse(message['content'])}</div>
+                        <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
                 </div>`)
-                // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
         } else if (displayedMessages.find(object => { return object.id === message['id'] }) === undefined) {
             messagesUpdated = true
             displayedMessages.push({
@@ -181,11 +180,10 @@ function insertMessagesAndConfigureForm(response) {
                 messagesDiv.insertAdjacentHTML('afterbegin',
                         `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                         <div class="${message['role']}">
-                            <div class="message-content">${marked.parse(message['content'])}</div>
+                            <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
                         </div>
                         <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
                     </div>`)
-                    // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
             }
 
             if (indexOfMessage > 0) {
@@ -196,13 +194,14 @@ function insertMessagesAndConfigureForm(response) {
                 previousMessageDiv.insertAdjacentHTML('afterend',
                 `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
                     <div class="${message['role']}">
-                        <div class="message-content">${marked.parse(message['content'])}</div>
+                        <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
                     </div>
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
                 </div>`)
-                // Prism.highlightElement(document.querySelector(`#${message['role']}-${uuid}`).querySelector('code'))
             }
         }
+        console.log(marked.parse(message['content']))
+        verifyBeforeHighlightElement(`#${message['role']}-${uuid}`)
     })
     if (messagesUpdated) {
         messagesDiv.scrollTo({ top: messagesDiv.scrollHeight })
@@ -247,7 +246,7 @@ function messagesLoading(messageSentContent) {
     bottomPaddingDiv.insertAdjacentHTML("beforebegin",
         `<div class="user-container" id="loading-user-container">
             <div class="user">
-                <div class="message-content">${messageSentContent}</div>
+                <div class="message-content">${marked.parse(messageSentContent)}</div>
             </div>
             <div class="date">${getFormattedDate()}</div>
         </div>
@@ -469,9 +468,26 @@ function removeWarningUpdateMsgFailed() {
 }
 
 function htmlSpecialChars(str) {
-    return str.replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;")
+    strArray = str.split('<code>')
+
+
+    return str.replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;')
+ }
+
+ function verifyBeforeHighlightElement(selector) {
+
+    const element = document.querySelector(selector)
+
+    if(element.querySelector('pre code') !== null){
+  
+        element.querySelectorAll('pre code').forEach((el) => {
+            hljs.highlightElement(el)
+        })
+
+    }
+    return
  }

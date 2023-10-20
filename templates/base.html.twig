@@ -11,16 +11,17 @@
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 			<link href="https://fonts.googleapis.com/css2?family=AR+One+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-			{# <link rel="stylesheet" href="{{ asset('styles/prism.css') }}"> #}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/stackoverflow-dark.min.css">
 		{% endblock %}
 
 	</head>
-	<body class="line-numbers">
+	<body>
 		{% block body %}{% endblock %}
 		{% block javascripts %}
 			{{ importmap() }}
-			{# <script src="{{ asset('prism.js') }}" data-manual></script> #}
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js" integrity="sha512-rfX4p3RNnxdwLT3wWP1K0NR3ztTobn+sISlT9WhxDDK00zNYbQ6MCHA5OHm0hqKAzEMXYCgFrp8iY/ER5MkXqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		{% endblock %}
 	</body>
 </html>
+
