@@ -32,18 +32,21 @@ let updateMessagesAndFormInterval = setInterval(updateMessagesAndForm, 6000)
 
 resize(messageInput)
 
+
 window.addEventListener('click', (e) => {
     console.log(e.target.clientHeight)
 })
 
+
 window.addEventListener('click', (e) => {
-    if (e.target === settingsModal
-        || e.target === modalCloseBtn
-        || e.target === modalApplyBtn
-        || e.target === modalApplyBtn.querySelector('svg')
-        || e.target === modalCloseBtn.querySelector('svg')
-        || e.target === modalCloseBtn.querySelector('svg').querySelector('path')
-        || e.target === modalApplyBtn.querySelector('svg').querySelector('path')) {
+    const target = e.target
+    if (target === settingsModal
+        || target === modalCloseBtn
+        || target === modalApplyBtn
+        || target === modalApplyBtn.querySelector('svg')
+        || target === modalCloseBtn.querySelector('svg')
+        || target === modalCloseBtn.querySelector('svg').querySelector('path')
+        || target === modalApplyBtn.querySelector('svg').querySelector('path')) {
         e.preventDefault()
         settingsModal.style.display = 'none'
         sysMsgHintText.style.display = null
@@ -52,29 +55,35 @@ window.addEventListener('click', (e) => {
     }
 })
 
+
 temperatureInputPlus.addEventListener('click', (e) => {
     e.preventDefault()
     temperatureInput.stepUp()
 })
+
 
 temperatureInputMinus.addEventListener('click', (e) => {
     e.preventDefault()
     temperatureInput.stepDown()
 })
 
+
 contextLimitInputPlus.addEventListener('click', (e) => {
     e.preventDefault()
     contextLimitInput.stepUp()
 })
+
 
 contextLimitInputMinus.addEventListener('click', (e) => {
     e.preventDefault()
     contextLimitInput.stepDown()
 })
 
+
 settingsBtn.addEventListener('click', (e) => {
     settingsModal.style.display = 'flex'
 })
+
 
 messageInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -82,13 +91,16 @@ messageInput.addEventListener('keypress', function (e) {
     }
 })
 
+
 submitBtn.addEventListener('click', (e) => {
     submitFormUpdateMessages(e)
 })
 
+
 messageInput.addEventListener('input', () => {
     resize(messageInput)
 })
+
 
 showHintBtn.addEventListener('click', (e) => {
     e.preventDefault()
@@ -96,6 +108,7 @@ showHintBtn.addEventListener('click', (e) => {
     showHintBtn.style.display = 'none'
     showHintBtn.querySelector('svg').style.display = 'none'
 })
+
 
 async function updateMessagesAndForm() {
     try {
@@ -116,9 +129,11 @@ async function updateMessagesAndForm() {
         removeWarningUpdateMsgFailed()
         insertMessagesAndConfigureForm(responseData)
     } catch (error) {
+        console.log(error)
         warningUpdateMsgFailed()
     }
 }
+
 
 function insertMessagesAndConfigureForm(response) {
     token.value = response.token
@@ -139,74 +154,17 @@ function insertMessagesAndConfigureForm(response) {
         const uuid = uuidv4()
         if (displayedMessages.length === 0) {
             messagesUpdated = true
-            displayedMessages = [{
-                id: message['id'],
-                uuid: uuid,
-                role: message['role'],
-                timestamp: message['createdAt']['timestamp'],
-                content: message['content']
-            }]
-            bottomPaddingDiv.insertAdjacentHTML("beforebegin",
-                    `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
-                    <div class="${message['role']}">
-                        <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
-                    </div>
-                    <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`)
+            displayFirstMessage(message, uuid)
         } else if (displayedMessages.find(object => { return object.id === message['id'] }) === undefined) {
             messagesUpdated = true
-            displayedMessages.push({
-                id: message['id'],
-                uuid: uuid, role: message['role'],
-                timestamp: message['createdAt']['timestamp'],
-                content: message['content']
-            })
-
-            displayedMessages = displayedMessages.sort((aObject, bObject) => {
-                const aTimestamp = aObject.timestamp
-                const bTimestamp = bObject.timestamp
-                if (aTimestamp > bTimestamp) {
-                    return 1
-                }
-                if (aTimestamp < bTimestamp) {
-                    return -1
-                }
-                return 0
-            })
-
-            const indexOfMessage = displayedMessages.findIndex(object => { return object.uuid === uuid })
-
-            if (indexOfMessage === 0) {
-                messagesDiv.insertAdjacentHTML('afterbegin',
-                        `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
-                        <div class="${message['role']}">
-                            <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
-                        </div>
-                        <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                    </div>`)
-            }
-
-            if (indexOfMessage > 0) {
-                const indexOfPreviousMessage = indexOfMessage - 1
-
-                const previousMessageDiv = document.querySelector(`#${displayedMessages[indexOfPreviousMessage].role}-${displayedMessages[indexOfPreviousMessage].uuid}`)
-
-                previousMessageDiv.insertAdjacentHTML('afterend',
-                `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
-                    <div class="${message['role']}">
-                        <div class="message-content">${marked.parse(htmlSpecialChars(message['content']))}</div>
-                    </div>
-                    <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
-                </div>`)
-            }
+            displayMessage(message, uuid)
         }
-        console.log(marked.parse(message['content']))
-        verifyBeforeHighlightElement(`#${message['role']}-${uuid}`)
     })
     if (messagesUpdated) {
         messagesDiv.scrollTo({ top: messagesDiv.scrollHeight })
     }
 }
+
 
 async function submitFormUpdateMessages(event) {
     event.preventDefault()
@@ -232,6 +190,7 @@ async function submitFormUpdateMessages(event) {
         removeWarningMsgFormSubmitFailed()
         messagesLoaded(responseData)
     } catch (error) {
+        console.log(error)
         warningMsgFormSubmitFailed()
     }
 
@@ -239,14 +198,15 @@ async function submitFormUpdateMessages(event) {
     updateMessagesAndFormInterval = setInterval(updateMessagesAndForm, 6000)
 }
 
+
 function messagesLoading(messageSentContent) {
-    messageSentContent = htmlSpecialChars(messageSentContent)
+    messageSentContent = DOMPurify.sanitize(convertStringToHTMLEntities(messageSentContent))
     messageInput.value = ''
     resize(messageInput)
     bottomPaddingDiv.insertAdjacentHTML("beforebegin",
         `<div class="user-container" id="loading-user-container">
             <div class="user">
-                <div class="message-content">${marked.parse(messageSentContent)}</div>
+                <div class="message-content">${messageSentContent}</div>
             </div>
             <div class="date">${getFormattedDate()}</div>
         </div>
@@ -263,6 +223,7 @@ function messagesLoading(messageSentContent) {
         messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     }, 400)
 }
+
 
 function messagesLoaded(response) {
     token.value = response.token
@@ -293,19 +254,32 @@ function messagesLoaded(response) {
         content: response.assistantMessage.content
     })
 
-    typeMessage(loadingMessageContentDiv, response.assistantMessage.content)
+    const assistantMessageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(response.assistantMessage.content)))
+
+    let htmlMessage = new DOMParser().parseFromString(assistantMessageContent, "text/html")
+    console.log(htmlMessage)
+    htmlMessage.querySelector('body').childNodes.forEach((node, index) => { 
+    console.log(node.innerText)
+    console.log(true)
+})
+
+    typeMessage(loadingMessageContentDiv, assistantMessageContent)
 
     loadingMessageContentDiv.removeAttribute('id')
 }
 
+
 function typeMessage(loadingMessageContentDiv, messageContent) {
     loadingMessageContentDiv.innerHTML = messageContent
+    highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
+    messageContent = loadingMessageContentDiv.innerHTML
     loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`
     loadingMessageContentDiv.parentElement.style.overflowX = "hidden";
     bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     type(loadingMessageContentDiv, messageContent, bottomPaddingDiv.clientHeight)
 }
+
 
 function type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, index = 0) {
     if (index < messageContent.length) {
@@ -321,6 +295,7 @@ function type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, ind
         bottomPaddingDiv.style.height = null
     }
 }
+
 
 function getFormattedDate(timestamp = Date.now() / 1000, message = false) {
 
@@ -379,16 +354,19 @@ function getFormattedDate(timestamp = Date.now() / 1000, message = false) {
     return dateArray.join(' ')
 }
 
+
 function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     )
 }
 
+
 function resize(messageInput) {
     messageInput.style.height = 'auto'
     messageInput.style.height = messageInput.scrollHeight + 'px'
 }
+
 
 function verifyConditionsBeforeStubmit(sentMessageContent) {
     if (isChatInputDisabled) {
@@ -444,6 +422,7 @@ function warningMsgFormSubmitFailed() {
     assistantContainerDate.innerHTML = warningIcon + ' ' + getFormattedDate()
 }
 
+
 function removeWarningMsgFormSubmitFailed() {
     if (document.querySelector('.loading-failed') !== null) {
         document.querySelectorAll('.loading-failed').forEach((div) => {
@@ -451,6 +430,7 @@ function removeWarningMsgFormSubmitFailed() {
         })
     }
 }
+
 
 function warningUpdateMsgFailed() {
     if (messagesDiv.querySelector('.user-container') === null
@@ -460,6 +440,7 @@ function warningUpdateMsgFailed() {
     }
 }
 
+
 function removeWarningUpdateMsgFailed() {
     const warningMessage = document.querySelector('#update-failed-err-msg')
     if (warningMessage !== null) {
@@ -467,27 +448,125 @@ function removeWarningUpdateMsgFailed() {
     }
 }
 
-function htmlSpecialChars(str) {
-    strArray = str.split('<code>')
+
+function convertStringToHTMLEntities(inputString) {
+    const preCodeBlockRegex = /```[a-z]*\s*([\s\S]*?)\s*```/gm
+    const codeBlockRegex = /`[a-z]*\s*([\s\S]*?)\s*`/gm
+
+    const preCodeBlocks = []
+    const codeBlocks = []
+    const preCodeBlockPlaceholder = '%%PRECODEBLOCK%%'
+    const codeBlockPlaceholder = '%%CODEBLOCK%%'
+    let convertedString = inputString.replace(preCodeBlockRegex, (match, preCodeBlock) => {
+        preCodeBlocks.push(match)
+        return preCodeBlockPlaceholder
+    });
+
+    convertedString = inputString.replace(codeBlockRegex, (match, codeBlock) => {
+        codeBlocks.push(match)
+        return codeBlockPlaceholder
+    });
+
+    convertedString = convertedString.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+
+    convertedString = convertedString.replace(new RegExp(preCodeBlockPlaceholder, 'g'), () => {
+        return preCodeBlocks.shift()
+    });
+
+    convertedString = convertedString.replace(new RegExp(codeBlockPlaceholder, 'g'), () => {
+        return codeBlocks.shift()
+    });
+
+    return convertedString
+}
 
 
-    return str.replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;')
- }
 
- function verifyBeforeHighlightElement(selector) {
+function highlightCodeInsideMessage(selector) {
 
     const element = document.querySelector(selector)
 
-    if(element.querySelector('pre code') !== null){
-  
+    if (element.querySelector('pre code') !== null) {
+
         element.querySelectorAll('pre code').forEach((el) => {
             hljs.highlightElement(el)
         })
 
     }
     return
- }
+}
+
+
+function displayFirstMessage(message, uuid) {
+    const messageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(message['content'])))
+    displayedMessages = [{
+        id: message['id'],
+        uuid: uuid,
+        role: message['role'],
+        timestamp: message['createdAt']['timestamp'],
+        content: message['content']
+    }]
+    bottomPaddingDiv.insertAdjacentHTML("beforebegin",
+        `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+            <div class="${message['role']}">
+                <div class="message-content">${messageContent}</div>
+            </div>
+            <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
+        </div>`)
+
+    highlightCodeInsideMessage(`#${message['role']}-${uuid}`)
+}
+
+
+function displayMessage(message, uuid) {
+    const messageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(message['content'])))
+    displayedMessages.push({
+        id: message['id'],
+        uuid: uuid, role: message['role'],
+        timestamp: message['createdAt']['timestamp'],
+        content: message['content']
+    })
+
+    displayedMessages = displayedMessages.sort((aObject, bObject) => {
+        const aTimestamp = aObject.timestamp
+        const bTimestamp = bObject.timestamp
+        if (aTimestamp > bTimestamp) {
+            return 1
+        }
+        if (aTimestamp < bTimestamp) {
+            return -1
+        }
+        return 0
+    })
+
+    const indexOfMessage = displayedMessages.findIndex(object => { return object.uuid === uuid })
+
+    if (indexOfMessage === 0) {
+        messagesDiv.insertAdjacentHTML('afterbegin',
+            `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+                <div class="${message['role']}">
+                    <div class="message-content">${messageContent}</div>
+                </div>
+                <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
+            </div>`)
+    }
+
+    if (indexOfMessage > 0) {
+        const indexOfPreviousMessage = indexOfMessage - 1
+
+        const previousMessageDiv = document.querySelector(`#${displayedMessages[indexOfPreviousMessage].role}-${displayedMessages[indexOfPreviousMessage].uuid}`)
+
+        previousMessageDiv.insertAdjacentHTML('afterend',
+            `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
+            <div class="${message['role']}">
+                <div class="message-content">${messageContent}</div>
+            </div>
+            <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
+        </div>`)
+    }
+    highlightCodeInsideMessage(`#${message['role']}-${uuid}`)
+}

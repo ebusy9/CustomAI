@@ -1,7 +1,10 @@
 :root {
-    --color-one: rgb(27, 38, 44);
+    /* --color-one: rgb(27, 38, 44);
     --color-two: rgb(15, 76, 117);
-    --color-three: rgb(50, 130, 184);
+    --color-three: rgb(50, 130, 184); */
+    --color-one: rgb(4, 13, 18);
+    --color-three: rgb(92, 131, 116);
+    --color-two: rgb(24, 61, 61);
     --color-four: rgb(225, 225, 250);
     --color-red: #DD4A48;
     --color-green: #B6E388;
