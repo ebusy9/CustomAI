@@ -258,10 +258,10 @@ function messagesLoaded(response) {
 
     let htmlMessage = new DOMParser().parseFromString(assistantMessageContent, "text/html")
     console.log(htmlMessage)
-    htmlMessage.querySelector('body').childNodes.forEach((node, index) => { 
-    console.log(node.innerText)
-    console.log(true)
-})
+    htmlMessage.querySelector('body').childNodes.forEach((node, index) => {
+        console.log(node.innerText)
+        console.log(true)
+    })
 
     typeMessage(loadingMessageContentDiv, assistantMessageContent)
 
@@ -278,6 +278,18 @@ function typeMessage(loadingMessageContentDiv, messageContent) {
     bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     type(loadingMessageContentDiv, messageContent, bottomPaddingDiv.clientHeight)
+}
+
+function getHideMessageandGetTextContent(loadingMessageContentDiv) {
+
+    let elements = loadingMessageContentDiv.getElementsByTagName("*")
+
+    let elemntsTextContent = []
+
+    for (let i = 0; i < elements.length; i++) {
+        elemntsTextContent.push(elements[i].textContent)
+        elements[i].style.display = 'none'
+    }
 }
 
 
