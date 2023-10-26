@@ -582,3 +582,39 @@ function displayMessage(message, uuid) {
     }
     highlightCodeInsideMessage(`#${message['role']}-${uuid}`)
 }
+
+// // Sample HTML content
+// const html = '<p>This is an <span>example</span></p>';
+
+// // Create a temporary div element to parse the HTML
+// const tempDiv = document.createElement('div');
+// tempDiv.innerHTML = html;
+
+// // Find the target parent tag (in this case, <p>)
+// const targetParent = tempDiv.querySelector('p');
+
+// // Function to extract text and exclude nested HTML tags
+// function extractText(element) {
+//   let text = '';
+
+//   for (const child of element.childNodes) {
+//     if (child.nodeType === Node.TEXT_NODE) {
+//       // If it's a text node, add the text content
+//       text += child.textContent;
+//     } else if (child.nodeType === Node.ELEMENT_NODE) {
+//       // If it's an element node, recursively process it
+//       text += extractText(child);
+//     }
+//   }
+
+//   return text;
+// }
+
+// // Extract text from the target parent
+// const extractedText = extractText(targetParent);
+
+// // Clean up the temporary div element
+// tempDiv.remove();
+
+// // Output the extracted text
+// console.log(extractedText.trim());
