@@ -5,9 +5,7 @@ namespace App\Service;
 use App\Entity\Message;
 use App\Repository\MessageRepository;
 use DateTimeImmutable;
-use OpenAI;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -62,7 +60,7 @@ class OpenAIService
 
         // $response = $result->toArray();
 
-        $response =  $this->messageRepository->findOneBy(['id' => 19]);
+        $response =  $this->messageRepository->findOneBy(['id' => 46]);
 
         $responseMessageObject = (new Message())
             // ->setContent($response['choices'][0]['message']['content'])

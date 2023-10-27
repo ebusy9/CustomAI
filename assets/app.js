@@ -1,3 +1,5 @@
+import hljs from 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js'
+
 const submitBtn = document.querySelector('#sub-btn')
 const token = document.querySelector('#token')
 const messagesDiv = document.querySelector('#messages')
@@ -256,13 +258,6 @@ function messagesLoaded(response) {
 
     const assistantMessageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(response.assistantMessage.content)))
 
-    let htmlMessage = new DOMParser().parseFromString(assistantMessageContent, "text/html")
-    console.log(htmlMessage)
-    htmlMessage.querySelector('body').childNodes.forEach((node, index) => {
-        console.log(node.innerText)
-        console.log(true)
-    })
-
     typeMessage(loadingMessageContentDiv, assistantMessageContent)
 
     loadingMessageContentDiv.removeAttribute('id')
@@ -271,25 +266,16 @@ function messagesLoaded(response) {
 
 function typeMessage(loadingMessageContentDiv, messageContent) {
     loadingMessageContentDiv.innerHTML = messageContent
+
     highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
+    // loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`
     messageContent = loadingMessageContentDiv.innerHTML
-    loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`
-    loadingMessageContentDiv.parentElement.style.overflowX = "hidden";
-    bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
-    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
-    type(loadingMessageContentDiv, messageContent, bottomPaddingDiv.clientHeight)
-}
 
-function getHideMessageandGetTextContent(loadingMessageContentDiv) {
-
-    let elements = loadingMessageContentDiv.getElementsByTagName("*")
-
-    let elemntsTextContent = []
-
-    for (let i = 0; i < elements.length; i++) {
-        elemntsTextContent.push(elements[i].textContent)
-        elements[i].style.display = 'none'
-    }
+    // loadingMessageContentDiv.parentElement.style.overflowX = "hidden"
+    console.log(extractTextBetweenTags(loadingMessageContentDiv))
+    // bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
+    // messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+    // type(loadingMessageContentDiv, messageContent, bottomPaddingDiv.clientHeight)
 }
 
 
@@ -583,38 +569,20 @@ function displayMessage(message, uuid) {
     highlightCodeInsideMessage(`#${message['role']}-${uuid}`)
 }
 
-// // Sample HTML content
-// const html = '<p>This is an <span>example</span></p>';
+function extractTextBetweenTags(loadingMessageContentDiv) {
 
-// // Create a temporary div element to parse the HTML
-// const tempDiv = document.createElement('div');
-// tempDiv.innerHTML = html;
+    const text = [];
+    const walker = document.createTreeWalker(loadingMessageContentDiv, NodeFilter.SHOW_TEXT, null, false)
 
-// // Find the target parent tag (in this case, <p>)
-// const targetParent = tempDiv.querySelector('p');
+    while (walker.nextNode()) {
+        text.push(walker.currentNode.textContent)
+        walker.currentNode.textContent = ''
+    }
 
-// // Function to extract text and exclude nested HTML tags
-// function extractText(element) {
-//   let text = '';
+    const elements = loadingMessageContentDiv.querySelectorAll('*');
+    elements.forEach((element) => {
+        element.style.display = 'none'
+    })
 
-//   for (const child of element.childNodes) {
-//     if (child.nodeType === Node.TEXT_NODE) {
-//       // If it's a text node, add the text content
-//       text += child.textContent;
-//     } else if (child.nodeType === Node.ELEMENT_NODE) {
-//       // If it's an element node, recursively process it
-//       text += extractText(child);
-//     }
-//   }
-
-//   return text;
-// }
-
-// // Extract text from the target parent
-// const extractedText = extractText(targetParent);
-
-// // Clean up the temporary div element
-// tempDiv.remove();
-
-// // Output the extracted text
-// console.log(extractedText.trim());
+    return text;
+}
