@@ -60,7 +60,7 @@ class OpenAIService
 
         // $response = $result->toArray();
 
-        $response =  $this->messageRepository->findOneBy(['id' => 46]);
+        $response =  $this->messageRepository->findOneBy(['id' => 17]);
 
         $responseMessageObject = (new Message())
             // ->setContent($response['choices'][0]['message']['content'])
@@ -129,15 +129,14 @@ class OpenAIService
         $this->contextLimit = $contextLimit;
     }
 
-    public function setTemperature(int $temperature): void 
+    public function setTemperature(int $temperature): void
     {
         $this->temperature = $temperature;
     }
 
     public function getTemperature(): float
     {
-        if($this->temperature === 0)
-        {
+        if ($this->temperature === 0) {
             return $this->temperature;
         }
 
