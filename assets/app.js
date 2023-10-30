@@ -266,58 +266,51 @@ function messagesLoaded(response) {
 
 function typeMessage(loadingMessageContentDiv, assistantMessageContent) {
     loadingMessageContentDiv.innerHTML = assistantMessageContent
-    loadingMessageContentDiv.parentElement.style.overflowX = "hidden"
-
-    // highlightCodeInsideMessageAndThenSetWidth(loadingMessageContentDiv.id)
     highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
-    // loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`
 
-    bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
+    const bottomPaddingDivHeight = setDivWidthWithContent(loadingMessageContentDiv)
 
-    const extractedText = extractTextBetweenTags(loadingMessageContentDiv)
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
 
+    const extractedText = extractTextBetweenTags(loadingMessageContentDiv)
 
+    type(loadingMessageContentDiv, extractedText, bottomPaddingDivHeight)
 
-
-    typeV2(loadingMessageContentDiv, extractedText, bottomPaddingDiv.clientHeight)
-
-    // type(loadingMessageContentDiv, messageContent, bottomPaddingDiv.clientHeight)
 }
 
 
-function typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex = 0, textIndex = 0, cursor = null) {
+function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex = 0, textIndex = 0, cursor = null) {
     const message = extractedText[msgIndex]
     message.parentElement.style.display = null
     message.parentElement.parentNode.style.display = null
 
-    if (textIndex === 0) {
-        cursor = document.createElement('span')
-        cursor.className = 'blinking-cursor'
-        cursor.textContent = '|'
-        message.parentElement.insertBefore(cursor, message.textNode.nextSibling)
-    }
+    // if (textIndex === 0) {
+    //     cursor = document.createElement('span')
+    //     cursor.className = 'blinking-cursor'
+    //     cursor.textContent = '|'
+    //     message.parentElement.insertBefore(cursor, message.textNode.nextSibling)
+    // }
 
-    if (textIndex < message.textContent.length) {
-        message.textNode.textContent = message.textContent.slice(0, textIndex)
+    if (textIndex < message.textContent.length && message.textContent !== '\n') {
+        message.textNode.textContent = message.textContent.slice(0, textIndex) + '█'
 
         textIndex += Math.floor(Math.random() * 5)
 
         setTimeout(() => {
-            typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex, textIndex, cursor)
+            type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex, textIndex, cursor)
         }, Math.floor(Math.random() * 90))
 
         bottomPaddingDiv.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
 
     } else {
-
         message.textNode.textContent = message.textContent
-        cursor.style.display = 'none'
-        cursor.remove()
-
+        // cursor.remove()
         if (typeof extractedText[msgIndex + 1] !== 'undefined') {
 
-            typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex + 1)
+            setTimeout(() => {
+                type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex + 1)
+            }, Math.floor(Math.random() * 90))
+            
 
         } else {
 
@@ -326,22 +319,6 @@ function typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, ms
             bottomPaddingDiv.style.height = null
 
         }
-    }
-}
-
-
-function type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, index = 0) {
-    if (index < messageContent.length) {
-        loadingMessageContentDiv.innerHTML = messageContent.slice(0, index) + '<span class="blinking-cursor">|</span>'
-        index += Math.floor(Math.random() * 5)
-        setTimeout(() => { type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, index) }, Math.floor(Math.random() * 90))
-        bottomPaddingDiv.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
-    } else {
-        loadingMessageContentDiv.innerHTML = messageContent.slice(0, index) + '<span class="blinking-cursor">|</span>'
-        setTimeout(() => { loadingMessageContentDiv.querySelector('.blinking-cursor').remove() }, 9000)
-        loadingMessageContentDiv.style.width = null
-        loadingMessageContentDiv.parentElement.style.overflowX = null
-        bottomPaddingDiv.style.height = null
     }
 }
 
@@ -643,9 +620,18 @@ function extractTextBetweenTags(loadingMessageContentDiv) {
     return text;
 }
 
-function highlightCodeInsideMessageAndThenSetWidth(divId) {
-    highlightCodeInsideMessage(`#${divId}`, () => {
-        const loadingMessageContentDiv = document.querySelector(`#${divId}`);
-        loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`;
-    });
+function setDivWidthWithContent(div) {
+    const cloneDiv = div.cloneNode(true)
+    cloneDiv.style.visibility = "hidden"
+    cloneDiv.style.position = "absolute"
+    cloneDiv.style.top = "-1000px"
+    document.body.appendChild(cloneDiv)
+    const width = cloneDiv.clientWidth
+    bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + cloneDiv.clientHeight - 22 + 'px'
+    document.body.removeChild(cloneDiv)
+
+    div.style.width = `${width}px`
+    div.parentElement.style.overflowX = "hidden"
+
+    return bottomPaddingDiv.clientHeight
 }
