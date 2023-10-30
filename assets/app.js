@@ -268,8 +268,8 @@ function typeMessage(loadingMessageContentDiv, assistantMessageContent) {
     loadingMessageContentDiv.innerHTML = assistantMessageContent
     loadingMessageContentDiv.parentElement.style.overflowX = "hidden"
 
-    highlightCodeInsideMessageAndThenSetWidth(loadingMessageContentDiv.id);
-    // highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
+    // highlightCodeInsideMessageAndThenSetWidth(loadingMessageContentDiv.id)
+    highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
     // loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`
 
     bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + loadingMessageContentDiv.clientHeight - 22 + 'px'
@@ -307,11 +307,24 @@ function typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, ms
             typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex, textIndex, cursor)
         }, Math.floor(Math.random() * 90))
 
+        bottomPaddingDiv.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
+
     } else {
+
         message.textNode.textContent = message.textContent
+        cursor.style.display = 'none'
         cursor.remove()
+
         if (typeof extractedText[msgIndex + 1] !== 'undefined') {
+
             typeV2(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex + 1)
+
+        } else {
+
+            loadingMessageContentDiv.style.width = null
+            loadingMessageContentDiv.parentElement.style.overflowX = null
+            bottomPaddingDiv.style.height = null
+
         }
     }
 }
@@ -335,7 +348,7 @@ function type(loadingMessageContentDiv, messageContent, bottomPaddingHeight, ind
 
 function getFormattedDate(timestamp = Date.now() / 1000, message = false) {
 
-    const dateToday = new Date();
+    const dateToday = new Date()
     const date = new Date(timestamp * 1000)
 
     const formattedDate = date.toLocaleString('en-US', {
@@ -631,12 +644,8 @@ function extractTextBetweenTags(loadingMessageContentDiv) {
 }
 
 function highlightCodeInsideMessageAndThenSetWidth(divId) {
-    // Call highlightCodeInsideMessage with a callback function
     highlightCodeInsideMessage(`#${divId}`, () => {
-        // This code will run after highlightCodeInsideMessage is done.
         const loadingMessageContentDiv = document.querySelector(`#${divId}`);
         loadingMessageContentDiv.style.width = `${loadingMessageContentDiv.clientWidth}px`;
     });
 }
-
-// Usage:
