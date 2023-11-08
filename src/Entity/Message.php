@@ -27,6 +27,9 @@ class Message
     #[ORM\JoinColumn(nullable: false)]
     private ?OpenAIModel $model = null;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Message
     public function setModel(?OpenAIModel $model): static
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    public function isIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

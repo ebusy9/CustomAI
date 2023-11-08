@@ -23,7 +23,7 @@ class ChatController extends AbstractController
     }
 
 
-    #[Route('/api/gpt', name: 'api_pgt', methods: ['GET', 'POST'])]
+    #[Route('/api/gpt', name: 'api_pgt', methods: ['GET', 'POST', 'DELETE'])]
     public function gpt(Request $request, EntityManagerInterface $entityManager, OpenAIService $openAIService): Response
     {
         $message = new Message();
@@ -43,6 +43,10 @@ class ChatController extends AbstractController
             $entityManager->flush();
 
             return new JsonResponse($openAIService->getArrayWithResponseForJsonEncode($form, $response, $message));
+        }
+
+        if($request->isMethod('DELETE')) {
+            $openAIService->delteMessages();
         }
 
         return new JsonResponse($openAIService->getArrayWithAllMessagesForJsonEncode($form));
