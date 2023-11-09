@@ -3,8 +3,8 @@
     --color-two: rgb(15, 76, 117);
     --color-three: rgb(50, 130, 184); */
     --color-one: rgb(4, 13, 18);
-    --color-three: rgb(92, 131, 116);
     --color-two: rgb(24, 61, 61);
+    --color-three: rgb(92, 131, 116);
     --color-four: rgb(225, 225, 250);
     --color-red: #DD4A48;
     --color-green: #B6E388;
@@ -21,6 +21,27 @@ body {
     background-color: var(--color-one);
     color: var(--color-four);
     font-family: 'AR One Sans', sans-serif;
+    font-size: 16px;
+}
+
+textarea {
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 16px;
+}
+
+select {
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 16px;
+}
+
+input {
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 16px;
+}
+
+button {
+    font-family: 'AR One Sans', sans-serif;
+    font-size: 16px;
 }
 
 #chat-title {
@@ -49,7 +70,6 @@ body {
     font-size: 21px;
     font-weight: normal;
     margin-left: 4px;
-    font-family: unset;
 }
 
 #settings-btn {
@@ -83,23 +103,30 @@ body {
 .modal {
     background-color: var(--color-one);
     border: 1px solid var(--color-four);
-    width: 500px;
+    max-width: 500px;
     border-radius: 10px;
     animation: pop-modal 0.6s ease-out;
 }
 
+#settings-modal {
+    display: none;
+}
+
 .modal-header {
+    border-radius: 10px 10px 0 0;
+    background-color: var(--color-two);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-bottom: 1px solid var(--color-four);
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .title-container {
     display: flex;
 }
 
-#settings-icon {
+.modal-icon {
     height: 1.4rem;
     fill: var(--color-four);
     align-self: center;
@@ -113,15 +140,12 @@ body {
 }
 
 .close-modal-btn {
+    height: 17px;
     cursor: pointer;
-    margin-top: 10px;
     fill: var(--color-four);
-    font-size: 16px;
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    border: none;
-    background-color: transparent;
+    margin-right: 15px;
+    margin-top: 15px;
+    align-self: baseline;
 }
 
 .close-modal-btn:hover {
@@ -132,24 +156,22 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0 20px;
 }
 
 .modal-body label {
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 10px;
-    margin-left: 20px;
 }
 
 #model-select {
-    margin: 0px 20px;
     background-color: transparent;
     color: var(--color-four);
     border: 1px solid var(--color-four);
     border-radius: 5px;
     padding: 6px;
     padding-left: 3%;
-    font-family: unset;
     appearance: none;
     background-image: url("data:image/svg+xml,<svg width='24' height='24' fill='white' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
     background-repeat: no-repeat;
@@ -173,7 +195,6 @@ body {
     border-bottom: 1px solid var(--color-four);
     border-top: 1px solid var(--color-four);
     padding: 7px;
-    font-family: unset;
     outline: none;
     text-align: center;
     width: 60px;
@@ -185,7 +206,7 @@ body {
     background-color: transparent;
     color: var(--color-four);
     border: 1px solid var(--color-four);
-    height: 34px;
+    height: 38px;
     cursor: pointer;
     font-size: 24px;
     width: 30px;
@@ -194,7 +215,6 @@ body {
 .number-step-down-btn {
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
-    margin-left: 20px;
 }
 
 .number-step-down-btn:hover {
@@ -215,7 +235,6 @@ body {
 .textarea-container {
     border-radius: 5px;
     border: 1px solid var(--color-four);
-    margin: 0px 20px;
     display: flex;
     flex-direction: row;
 }
@@ -225,7 +244,6 @@ body {
     background-color: transparent;
     color: unset;
     outline: none;
-    font-family: unset;
     overflow-x: auto;
     margin: 10px;
     width: 100%;
@@ -234,8 +252,7 @@ body {
 }
 
 .modal-body .hint {
-    margin: 0px 20px;
-    margin-top: 3px;
+    margin-top: 4px;
     font-size: small;
 }
 
@@ -268,7 +285,7 @@ body {
     height: 1.2rem;
 }
 
-.modal-footer {
+/* .modal-footer {
     display: flex;
     flex-direction: row-reverse;
     border-top: 1px solid var(--color-four);
@@ -280,7 +297,6 @@ body {
     flex-flow: space-around;
     align-items: center;
     margin: 3% 20px;
-    font-family: unset;
     color: var(--color-four);
     border: 1px solid var(--color-four);
     background-color: transparent;
@@ -301,7 +317,7 @@ body {
 .apply-modal-btn svg {
     height: 1.2rem;
     width: 100%
-}
+} */
 
 #messages {
     overflow-x: hidden;
@@ -448,7 +464,6 @@ body {
     border: none;
     outline: none;
     width: 100%;
-    font-family: unset;
     height: 22px;
 }
 
@@ -610,4 +625,56 @@ input[type="number"] {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
+}
+
+/* .pop-up-header {
+    flex-wrap: wrap;
+    border-radius: 10px 10px 0 0;
+    padding: 0 10px 0 10px;
+    min-height: 50px;
+    background-color: var(--color-two);
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    text-align: center;
+} */
+
+
+
+.pop-up-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 10px 0 10px 0;
+}
+
+.btn-accept {
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+    color: unset;
+    background-color: var(--color-red);
+    border: 1px solid var(--color-red);
+    transition: 200ms ease-in-out;
+}
+
+.btn-accept:hover {
+    color: var(--color-red);
+    background-color: var(--color-four);
+}
+
+.btn-cancel {
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+    color: unset;
+    background-color: transparent;
+    border: 1px solid var(--color-four);
+    transition: 200ms ease-in-out;
+}
+
+.btn-cancel:hover {
+    color: var(--color-one);
+    background-color: var(--color-four);
 }

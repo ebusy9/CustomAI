@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 class ChatController extends AbstractController
 {
     #[Route('/', name: 'app_chat')]
@@ -46,7 +45,10 @@ class ChatController extends AbstractController
         }
 
         if($request->isMethod('DELETE')) {
-            $openAIService->delteMessages();
+            $messages = $openAIService->markMessagesAsDeleted();
+
+            $entityManager->flush();
+            return new JsonResponse(['deletedQuantity' => count($messages)]);
         }
 
         return new JsonResponse($openAIService->getArrayWithAllMessagesForJsonEncode($form));

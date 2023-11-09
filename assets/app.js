@@ -6,10 +6,11 @@ const messagesDiv = document.querySelector('#messages')
 const form = document.querySelector('#message-form')
 const chatInput = document.querySelector('#form-inputs')
 const messageInput = document.querySelector('#content')
-const bottomPaddingDiv = document.querySelector('#bottom-padding')
-const settingsModal = document.querySelector('.modal-container')
+const bottomPaddingElement = document.querySelector('#bottom-padding')
+const settingsModalElement = document.querySelector('#settings-modal')
 const modalCloseBtn = document.querySelector('.close-modal-btn')
 const modalApplyBtn = document.querySelector('.apply-modal-btn')
+const deleteAllBtn = document.querySelector('#delete-chat-btn')
 const settingsBtn = document.querySelector('#settings-btn')
 const chatInputDisabledMsg = document.querySelector('#input-disabled-msg')
 const sysMsgHintText = document.querySelector('#system-msg-hidden-hint-text')
@@ -42,7 +43,7 @@ window.addEventListener('click', (e) => {
 
 window.addEventListener('click', (e) => {
     const target = e.target
-    if (target === settingsModal
+    if (target === settingsModalElement.parentElement
         || target === modalCloseBtn
         || target === modalApplyBtn
         || target === modalApplyBtn.querySelector('svg')
@@ -50,7 +51,8 @@ window.addEventListener('click', (e) => {
         || target === modalCloseBtn.querySelector('svg').querySelector('path')
         || target === modalApplyBtn.querySelector('svg').querySelector('path')) {
         e.preventDefault()
-        settingsModal.style.display = 'none'
+        settingsModalElement.parentElement.style.display = null
+        settingsModalElement.style.display = null
         sysMsgHintText.style.display = null
         showHintBtn.style.display = null
         showHintBtn.querySelector('svg').style.display = null
@@ -83,7 +85,8 @@ contextLimitInputMinus.addEventListener('click', (e) => {
 
 
 settingsBtn.addEventListener('click', (e) => {
-    settingsModal.style.display = 'flex'
+    settingsModalElement.parentElement.style.display = 'flex'
+    settingsModalElement.style.display = 'unset'
 })
 
 
@@ -111,6 +114,7 @@ showHintBtn.addEventListener('click', (e) => {
     showHintBtn.querySelector('svg').style.display = 'none'
 })
 
+deleteAllBtn.addEventListener('click', deleteMessages)
 
 async function updateMessagesAndForm() {
     try {
@@ -167,6 +171,12 @@ function insertMessagesAndConfigureForm(response) {
     }
 }
 
+async function deleteMessages(){
+    const response = await fetch('api/gpt', {
+        method: 'DELETE'
+    })
+}
+
 
 async function submitFormUpdateMessages(event) {
     event.preventDefault()
@@ -205,7 +215,7 @@ function messagesLoading(messageSentContent) {
     messageSentContent = DOMPurify.sanitize(convertStringToHTMLEntities(messageSentContent))
     messageInput.value = ''
     resize(messageInput)
-    bottomPaddingDiv.insertAdjacentHTML("beforebegin",
+    bottomPaddingElement.insertAdjacentHTML("beforebegin",
         `<div class="user-container" id="loading-user-container">
             <div class="user">
                 <div class="message-content">${messageSentContent}</div>
@@ -268,13 +278,13 @@ function typeMessage(loadingMessageContentDiv, assistantMessageContent) {
     loadingMessageContentDiv.innerHTML = assistantMessageContent
     highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
 
-    const bottomPaddingDivHeight = setDivWidthWithContent(loadingMessageContentDiv)
+    const bottomPaddingElementHeight = setDivWidthWithContent(loadingMessageContentDiv)
 
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
 
     const extractedText = extractTextBetweenTags(loadingMessageContentDiv)
 
-    type(loadingMessageContentDiv, extractedText, bottomPaddingDivHeight)
+    type(loadingMessageContentDiv, extractedText, bottomPaddingElementHeight)
 
 }
 
@@ -300,7 +310,7 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
             type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex, textIndex, cursor)
         }, Math.floor(Math.random() * 90))
 
-        bottomPaddingDiv.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
+        bottomPaddingElement.style.height = (bottomPaddingHeight + 22) - loadingMessageContentDiv.clientHeight + 'px'
 
     } else {
         message.textNode.textContent = message.textContent
@@ -316,7 +326,7 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
 
             loadingMessageContentDiv.style.width = null
             loadingMessageContentDiv.parentElement.style.overflowX = null
-            bottomPaddingDiv.style.height = null
+            bottomPaddingElement.style.height = null
 
         }
     }
@@ -462,7 +472,7 @@ function warningUpdateMsgFailed() {
     if (messagesDiv.querySelector('.user-container') === null
         && messagesDiv.querySelector('.assistant-container') === null
         && messagesDiv.querySelector('#update-failed-err-msg') === null) {
-        bottomPaddingDiv.insertAdjacentHTML('beforebegin', `<div id="update-failed-err-msg">${warningIcon} <p> An error occurred while loading messages. Please check your internet connection and try again.</p></div>`)
+        bottomPaddingElement.insertAdjacentHTML('beforebegin', `<div id="update-failed-err-msg">${warningIcon} <p> An error occurred while loading messages. Please check your internet connection and try again.</p></div>`)
     }
 }
 
@@ -536,7 +546,7 @@ function displayFirstMessage(message, uuid) {
         timestamp: message['createdAt']['timestamp'],
         content: message['content']
     }]
-    bottomPaddingDiv.insertAdjacentHTML("beforebegin",
+    bottomPaddingElement.insertAdjacentHTML("beforebegin",
         `<div class="${message['role']}-container" id="${message['role']}-${uuid}">
             <div class="${message['role']}">
                 <div class="message-content">${messageContent}</div>
@@ -627,11 +637,11 @@ function setDivWidthWithContent(div) {
     cloneDiv.style.top = "-1000px"
     document.body.appendChild(cloneDiv)
     const width = cloneDiv.clientWidth
-    bottomPaddingDiv.style.height = bottomPaddingDiv.clientHeight + cloneDiv.clientHeight - 22 + 'px'
+    bottomPaddingElement.style.height = bottomPaddingElement.clientHeight + cloneDiv.clientHeight - 22 + 'px'
     document.body.removeChild(cloneDiv)
 
     div.style.width = `${width}px`
     div.parentElement.style.overflowX = "hidden"
 
-    return bottomPaddingDiv.clientHeight
+    return bottomPaddingElement.clientHeight
 }

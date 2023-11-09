@@ -27,7 +27,7 @@ class OpenAIService
     public function generateResponse(Message $message): Message
     {
         $serializer = new Serializer([new ObjectNormalizer()], []);
-        $messagesFromDb = $this->messageRepository->findBy([], ['createdAt' => 'ASC'], $this->contextLimit);
+        $messagesFromDb = $this->messageRepository->findBy(['isDeleted' => false], ['createdAt' => 'ASC'], $this->contextLimit);
 
         $messages = [];
 
@@ -78,7 +78,7 @@ class OpenAIService
     {
 
         $serializer = new Serializer([new ObjectNormalizer()], []);
-        $messages = $this->messageRepository->findBy([], ['createdAt' => 'ASC']);
+        $messages = $this->messageRepository->findBy(['isDeleted' => false], ['createdAt' => 'ASC']);
 
         $messagesArray = [];
 
@@ -116,6 +116,16 @@ class OpenAIService
         ];
 
         return $response;
+    }
+
+    public function markMessagesAsDeleted(): array
+    {
+        $messages = $this->messageRepository->findBy(['isDeleted' => false]);
+        foreach ($messages as $message) {
+            $message->setIsDeleted(true);
+        };
+
+        return $messages;
     }
 
 
