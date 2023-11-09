@@ -28,7 +28,7 @@ class Message
     private ?OpenAIModel $model = null;
 
     #[ORM\Column]
-    private ?bool $isDeleted = null;
+    private bool $isDeleted = false;
 
     public function getId(): ?int
     {

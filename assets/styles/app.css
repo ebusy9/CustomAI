@@ -26,22 +26,18 @@ body {
 
 textarea {
     font-family: 'AR One Sans', sans-serif;
-    font-size: 16px;
 }
 
 select {
     font-family: 'AR One Sans', sans-serif;
-    font-size: 16px;
 }
 
 input {
     font-family: 'AR One Sans', sans-serif;
-    font-size: 16px;
 }
 
 button {
     font-family: 'AR One Sans', sans-serif;
-    font-size: 16px;
 }
 
 #chat-title {
@@ -108,13 +104,13 @@ button {
     animation: pop-modal 0.6s ease-out;
 }
 
-#settings-modal {
+/* #settings-modal {
     display: none;
-}
+} */
 
 .modal-header {
     border-radius: 10px 10px 0 0;
-    background-color: var(--color-two);
+    /* background-color: var(--color-two); */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -144,8 +140,9 @@ button {
     cursor: pointer;
     fill: var(--color-four);
     margin-right: 15px;
-    margin-top: 15px;
+    margin-top: 13px;
     align-self: baseline;
+    transition: 200ms ease-in-out;
 }
 
 .close-modal-btn:hover {
@@ -160,9 +157,12 @@ button {
 }
 
 .modal-body label {
-    font-size: 16px;
     margin-top: 20px;
     margin-bottom: 10px;
+}
+
+.modal-body label:nth-child(1) {
+    margin-top: 0;
 }
 
 #model-select {
@@ -197,8 +197,9 @@ button {
     padding: 7px;
     outline: none;
     text-align: center;
-    width: 60px;
+    width: 50px;
     cursor: default;
+    height: 16px;
 }
 
 .number-step-down-btn,
@@ -206,10 +207,11 @@ button {
     background-color: transparent;
     color: var(--color-four);
     border: 1px solid var(--color-four);
-    height: 38px;
+    height: 32px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 20px;
     width: 30px;
+    transition: 200ms ease-in-out;
 }
 
 .number-step-down-btn {
@@ -283,6 +285,66 @@ button {
 
 #show-system-msg-hint-btn svg {
     height: 1.2rem;
+}
+
+/* .delete-modal-header {
+    flex-wrap: wrap;
+    border-radius: 10px 10px 0 0;
+    padding: 0 10px 0 10px;
+    min-height: 50px;
+    background-color: var(--color-two);
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    text-align: center;
+} */
+
+
+#delete-modal {
+    max-width: 300px;
+}
+
+.delete-modal-text-content {
+    text-align: center;
+}
+
+.delete-modal-footer {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 20px 10px 20px;
+}
+
+.delete-modal-btn {
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+    color: unset;
+    border-radius: 5px;
+    transition: 200ms ease-in-out;
+    flex-grow: 1;
+}
+
+#confirm-delete {
+    background-color: var(--color-red);
+    border: 1px solid var(--color-red);
+    margin-right: 5px;
+}
+
+#confirm-delete:hover {
+    color: var(--color-red);
+    background-color: var(--color-four);
+}
+
+#cancel-delete {
+    background-color: transparent;
+    border: 1px solid var(--color-four);
+    margin-left: 5px;
+}
+
+#cancel-delete:hover {
+    color: var(--color-one);
+    background-color: var(--color-four);
 }
 
 /* .modal-footer {
@@ -452,7 +514,7 @@ button {
     animation: pop-chatinput 0.6s ease-out;
 }
 
-#content {
+#msg-input {
     resize: none;
     overflow-y: auto;
     max-height: 10vh;
@@ -468,17 +530,10 @@ button {
 }
 
 #sub-btn {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    width: 40px;
-    height: 40px;
-}
-
-#send-icon {
-    height: 1rem;
+    height: 18px;
     fill: var(--color-four);
+    padding: 10px;
+    opacity: 50%;
 }
 
 #input-disabled-msg {
@@ -625,56 +680,4 @@ input[type="number"] {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
-}
-
-/* .pop-up-header {
-    flex-wrap: wrap;
-    border-radius: 10px 10px 0 0;
-    padding: 0 10px 0 10px;
-    min-height: 50px;
-    background-color: var(--color-two);
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    text-align: center;
-} */
-
-
-
-.pop-up-footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    margin: 10px 0 10px 0;
-}
-
-.btn-accept {
-    cursor: pointer;
-    height: 30px;
-    width: 80px;
-    color: unset;
-    background-color: var(--color-red);
-    border: 1px solid var(--color-red);
-    transition: 200ms ease-in-out;
-}
-
-.btn-accept:hover {
-    color: var(--color-red);
-    background-color: var(--color-four);
-}
-
-.btn-cancel {
-    cursor: pointer;
-    height: 30px;
-    width: 80px;
-    color: unset;
-    background-color: transparent;
-    border: 1px solid var(--color-four);
-    transition: 200ms ease-in-out;
-}
-
-.btn-cancel:hover {
-    color: var(--color-one);
-    background-color: var(--color-four);
 }

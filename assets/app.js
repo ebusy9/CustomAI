@@ -5,11 +5,14 @@ const token = document.querySelector('#token')
 const messagesDiv = document.querySelector('#messages')
 const form = document.querySelector('#message-form')
 const chatInput = document.querySelector('#form-inputs')
-const messageInput = document.querySelector('#content')
+const messageInput = document.querySelector('#msg-input')
 const bottomPaddingElement = document.querySelector('#bottom-padding')
+const modalElements = document.querySelectorAll('.modal')
 const settingsModalElement = document.querySelector('#settings-modal')
-const modalCloseBtn = document.querySelector('.close-modal-btn')
-const modalApplyBtn = document.querySelector('.apply-modal-btn')
+const deleteModalElement = document.querySelector('#delete-modal')
+const confirmDeleteBtn = document.querySelector('#confirm-delete')
+const cancelDeleteBtn = document.querySelector('#cancel-delete')
+// const modalApplyBtn = document.querySelector('.apply-modal-btn')
 const deleteAllBtn = document.querySelector('#delete-chat-btn')
 const settingsBtn = document.querySelector('#settings-btn')
 const chatInputDisabledMsg = document.querySelector('#input-disabled-msg')
@@ -40,25 +43,33 @@ window.addEventListener('click', (e) => {
     console.log(e.target.clientHeight)
 })
 
+modalElements.forEach((modal) => {
+    window.addEventListener('click', (e) => {
+        if (e.target === modal.parentElement) {
+            closeModal(modal)
+        }
+    })
 
-window.addEventListener('click', (e) => {
-    const target = e.target
-    if (target === settingsModalElement.parentElement
-        || target === modalCloseBtn
-        || target === modalApplyBtn
-        || target === modalApplyBtn.querySelector('svg')
-        || target === modalCloseBtn.querySelector('svg')
-        || target === modalCloseBtn.querySelector('svg').querySelector('path')
-        || target === modalApplyBtn.querySelector('svg').querySelector('path')) {
-        e.preventDefault()
-        settingsModalElement.parentElement.style.display = null
-        settingsModalElement.style.display = null
-        sysMsgHintText.style.display = null
-        showHintBtn.style.display = null
-        showHintBtn.querySelector('svg').style.display = null
-    }
+    modal.querySelector('.close-modal-btn').addEventListener('click', () => {
+        closeModal(modal)
+    })
 })
 
+function closeModal(modal) {
+    modal.parentElement.style.display = null
+    sysMsgHintText.style.display = null
+    showHintBtn.style.display = null
+    showHintBtn.querySelector('svg').style.display = null
+}
+
+messageInput.addEventListener('input', () => {
+    if(messageInput.value.trim() !== '') {
+        submitBtn.style.opacity = '100%'
+        submitBtn.style.cursor = 'pointer'
+    } else {
+        submitBtn.style = null
+    }
+})
 
 temperatureInputPlus.addEventListener('click', (e) => {
     e.preventDefault()
@@ -84,10 +95,12 @@ contextLimitInputMinus.addEventListener('click', (e) => {
 })
 
 
-settingsBtn.addEventListener('click', (e) => {
+settingsBtn.addEventListener('click', openSettingsModal)
+
+
+function openSettingsModal() {
     settingsModalElement.parentElement.style.display = 'flex'
-    settingsModalElement.style.display = 'unset'
-})
+}
 
 
 messageInput.addEventListener('keypress', function (e) {
@@ -97,15 +110,25 @@ messageInput.addEventListener('keypress', function (e) {
 })
 
 
-submitBtn.addEventListener('click', (e) => {
-    submitFormUpdateMessages(e)
-})
+submitBtn.addEventListener('click', submitFormUpdateMessages)
 
 
 messageInput.addEventListener('input', () => {
     resize(messageInput)
 })
 
+deleteAllBtn.addEventListener('click', openDeleteModal)
+
+
+cancelDeleteBtn.addEventListener('click', () => {
+    closeModal(deleteModalElement)
+})
+
+function openDeleteModal() {
+    deleteModalElement.parentElement.style.display = 'flex'
+}
+
+confirmDeleteBtn.addEventListener('click', deleteMessages)
 
 showHintBtn.addEventListener('click', (e) => {
     e.preventDefault()
@@ -114,7 +137,19 @@ showHintBtn.addEventListener('click', (e) => {
     showHintBtn.querySelector('svg').style.display = 'none'
 })
 
-deleteAllBtn.addEventListener('click', deleteMessages)
+
+async function deleteMessages() {
+    closeModal(deleteModalElement)
+    try {
+        const response = await fetch('api/gpt', {
+            method: 'DELETE'
+        })
+        removeDisplayedMessages()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 async function updateMessagesAndForm() {
     try {
@@ -171,12 +206,6 @@ function insertMessagesAndConfigureForm(response) {
     }
 }
 
-async function deleteMessages(){
-    const response = await fetch('api/gpt', {
-        method: 'DELETE'
-    })
-}
-
 
 async function submitFormUpdateMessages(event) {
     event.preventDefault()
@@ -187,6 +216,7 @@ async function submitFormUpdateMessages(event) {
         return
     }
 
+    submitBtn.style = null
     clearInterval(updateMessagesAndFormInterval)
     isChatInputDisabled = true
     messagesLoading(sentMessageContent)
@@ -320,7 +350,7 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
             setTimeout(() => {
                 type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex + 1)
             }, Math.floor(Math.random() * 90))
-            
+
 
         } else {
 
@@ -562,7 +592,8 @@ function displayMessage(message, uuid) {
     const messageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(message['content'])))
     displayedMessages.push({
         id: message['id'],
-        uuid: uuid, role: message['role'],
+        uuid: uuid,
+        role: message['role'],
         timestamp: message['createdAt']['timestamp'],
         content: message['content']
     })
@@ -644,4 +675,10 @@ function setDivWidthWithContent(div) {
     div.parentElement.style.overflowX = "hidden"
 
     return bottomPaddingElement.clientHeight
+}
+
+function removeDisplayedMessages() {
+    for (let index = 0; index < displayedMessages.length; index++) {
+        document.querySelector(`#${displayedMessages[index].role}-${displayedMessages[index].uuid}`).remove()
+    }
 }
