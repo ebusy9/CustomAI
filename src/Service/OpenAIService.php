@@ -60,7 +60,7 @@ class OpenAIService
 
         // $response = $result->toArray();
 
-        $response =  $this->messageRepository->findOneBy(['id' => 99]);
+        $response =  $this->messageRepository->findOneBy(['id' => 18]);
 
         $responseMessageObject = (new Message())
             // ->setContent($response['choices'][0]['message']['content'])

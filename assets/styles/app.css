@@ -1,7 +1,4 @@
 :root {
-    /* --color-one: rgb(27, 38, 44);
-    --color-two: rgb(15, 76, 117);
-    --color-three: rgb(50, 130, 184); */
     --color-one: rgb(4, 13, 18);
     --color-two: rgb(24, 61, 61);
     --color-three: rgb(92, 131, 116);
@@ -104,10 +101,6 @@ button {
     animation: pop-modal 0.6s ease-out;
 }
 
-/* #settings-modal {
-    display: none;
-} */
-
 .modal-header {
     border-radius: 10px 10px 0 0;
     /* background-color: var(--color-two); */
@@ -173,7 +166,7 @@ button {
     padding: 6px;
     padding-left: 3%;
     appearance: none;
-    background-image: url("data:image/svg+xml,<svg width='24' height='24' fill='white' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
+    background-image: url("data:image/svg+xml,<svg width='24' height='24' fill='var(--color-four)' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
     background-repeat: no-repeat;
     background-size: 0.7em;
     background-position-x: 97%;
@@ -285,6 +278,96 @@ button {
 
 #show-system-msg-hint-btn svg {
     height: 1.2rem;
+}
+
+.color-selectors {
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    margin-bottom: 20px;
+}
+
+.select-color-btn {
+    cursor: pointer;
+    flex-grow: 1;
+    padding: 8px 0;
+    border: 1px solid var(--color-four);
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.select-color-btn:nth-last-child(1){
+    margin-right: 0;
+}
+
+.color-box {
+    flex-grow: 1;
+}
+
+#theme-one {
+    background-color: rgb(4, 13, 18);
+}
+
+#theme-one .color-two {
+    background-color: rgb(24, 61, 61);
+}
+
+#theme-one .color-four {
+    background-color: rgb(225, 225, 250);
+}
+
+#theme-one .color-three {
+    background-color: rgb(92, 131, 116);
+}
+
+#theme-two {
+    background-color: rgb(27, 38, 44);
+}
+
+#theme-two .color-two {
+    background-color: rgb(15, 76, 117);
+}
+
+#theme-two .color-four {
+    background-color: rgb(225, 225, 250);
+}
+
+#theme-two .color-three {
+    background-color: rgb(50, 130, 184);
+}
+
+#theme-three {
+    background-color: rgb(253, 232, 233);
+}
+
+#theme-three .color-two {
+    background-color: rgb(84, 101, 255);
+}
+
+#theme-three .color-four {
+    background-color: rgb(39, 39, 39);
+}
+
+#theme-three .color-three {
+    background-color: rgb(120, 139, 255);
+}
+
+#theme-four {
+    background-color: rgb(233, 232, 253);
+}
+
+#theme-four .color-two {
+    background-color: rgb(133, 189, 191);
+}
+
+#theme-four .color-four {
+    background-color: rgb(4, 15, 15);
+}
+
+#theme-four .color-three {
+    background-color: rgb(194, 252, 247);
 }
 
 /* .delete-modal-header {
