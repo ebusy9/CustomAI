@@ -16,6 +16,9 @@ class OpenAIModel
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $uiName = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,5 +39,17 @@ class OpenAIModel
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getUiName(): ?string
+    {
+        return $this->uiName;
+    }
+
+    public function setUiName(string $uiName): static
+    {
+        $this->uiName = $uiName;
+
+        return $this;
     }
 }

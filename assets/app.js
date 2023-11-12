@@ -183,7 +183,7 @@ function insertMessagesAndConfigureForm(response) {
     if (!modelSelectSet) {
         modelSelectSet = true
         response.models.forEach(model => {
-            if (model.label === 'gpt-3.5-turbo') {
+            if (model.label === 'GPT 3.5') {
                 modelSelect.innerHTML += `<option value='${model.value}' selected>${model.label}</option>`
             } else {
                 modelSelect.innerHTML += `<option value='${model.value}'>${model.label}</option>`
@@ -396,24 +396,7 @@ function getFormattedDate(timestamp = Date.now() / 1000, message = false) {
 
     if (message && message.role === "assistant") {
         dateArray.unshift(' | ')
-
-        switch (message.model.name) {
-            case 'gpt-4':
-                dateArray.unshift(' GPT 4')
-                break;
-            case 'gpt-4-32k':
-                dateArray.unshift(' GPT 4 32K')
-                break;
-            case 'gpt-3.5-turbo':
-                dateArray.unshift(' GPT 3.5')
-                break;
-            case 'gpt-3.5-turbo-16k':
-                dateArray.unshift(' GPT 3.5 16k')
-                break;
-            default:
-                dateArray.unshift(' unknown')
-                break;
-        }
+        dateArray.unshift(message.model.uiName)
         dateArray.unshift(openAiIcon)
     }
 
@@ -526,12 +509,12 @@ function convertStringToHTMLEntities(inputString) {
     let convertedString = inputString.replace(preCodeBlockRegex, (match, preCodeBlock) => {
         preCodeBlocks.push(match)
         return preCodeBlockPlaceholder
-    });
+    })
 
     convertedString = inputString.replace(codeBlockRegex, (match, codeBlock) => {
         codeBlocks.push(match)
         return codeBlockPlaceholder
-    });
+    })
 
     convertedString = convertedString.replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -541,15 +524,14 @@ function convertStringToHTMLEntities(inputString) {
 
     convertedString = convertedString.replace(new RegExp(preCodeBlockPlaceholder, 'g'), () => {
         return preCodeBlocks.shift()
-    });
+    })
 
     convertedString = convertedString.replace(new RegExp(codeBlockPlaceholder, 'g'), () => {
         return codeBlocks.shift()
-    });
+    })
 
     return convertedString
 }
-
 
 
 function highlightCodeInsideMessage(selector) {
@@ -638,9 +620,10 @@ function displayMessage(message, uuid) {
     highlightCodeInsideMessage(`#${message['role']}-${uuid}`)
 }
 
+
 function extractTextBetweenTags(loadingMessageContentDiv) {
 
-    const text = [];
+    const text = []
     const walker = document.createTreeWalker(loadingMessageContentDiv, NodeFilter.SHOW_TEXT, null, false)
 
     while (walker.nextNode()) {
@@ -653,13 +636,14 @@ function extractTextBetweenTags(loadingMessageContentDiv) {
         walker.currentNode.textContent = ''
     }
 
-    const elements = loadingMessageContentDiv.querySelectorAll('*');
+    const elements = loadingMessageContentDiv.querySelectorAll('*')
     elements.forEach((element) => {
         element.style.display = 'none'
     })
 
-    return text;
+    return text
 }
+
 
 function setDivWidthWithContent(div) {
     const cloneDiv = div.cloneNode(true)
@@ -675,6 +659,7 @@ function setDivWidthWithContent(div) {
 
     return bottomPaddingElement.clientHeight
 }
+
 
 function removeDisplayedMessages() {
     for (let index = 0; index < displayedMessages.length; index++) {

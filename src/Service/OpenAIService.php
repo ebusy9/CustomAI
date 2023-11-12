@@ -32,7 +32,12 @@ class OpenAIService
         $messages = [];
 
         if ($this->systemMessage !== null) {
-            $messages = [['role' => 'system', 'content' => $this->systemMessage]];
+            $messages = [
+                [
+                    'role' => 'system',
+                    'content' => $this->systemMessage
+                ]
+            ];
         }
 
         if ($messagesFromDb !== []) {
@@ -92,7 +97,7 @@ class OpenAIService
         $models = [];
 
         foreach ($form->createView()->children['model']->vars['choices'] as $choice) {
-            array_push($models, ['label' => $choice->label, 'value' => $choice->value]);
+            array_push($models, ['label' => $choice->data->getUiName(), 'value' => $choice->value]);
         }
 
         $responseArray = [

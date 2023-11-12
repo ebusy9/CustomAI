@@ -178,11 +178,12 @@ button {
     padding: 6px;
     padding-left: 3%;
     appearance: none;
-    background-image: url("data:image/svg+xml,<svg width='24' height='24' fill='var(--color-four)' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
+    background-image: url("data:image/svg+xml,<svg width='24' height='24' style='fill: var(--color-four);' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
     background-repeat: no-repeat;
     background-size: 0.7em;
     background-position-x: 97%;
     background-position-y: center;
+    outline: none;
 }
 
 #model-select option {
@@ -775,4 +776,31 @@ input[type="number"] {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
+}
+
+#scroll-to-bottom {
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 0 10px 1px black;
+    height: 35px;
+    width: 35px;
+    fill: var(--color-four);
+    background-color: var(--color-two);
+    bottom: 90px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 50%;
+    transition: 200ms ease-in-out;
+}
+
+
+#scroll-to-bottom svg {
+    height: 20px;
+}
+
+#scroll-to-bottom:hover {
+    opacity: 100%;
 }
