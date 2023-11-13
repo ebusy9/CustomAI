@@ -283,14 +283,13 @@ function getFormattedDate(timestamp = Date.now() / 1000, message = false) {
     const dateToday = new Date()
     const date = new Date(timestamp * 1000)
 
-    const formattedDate = date.toLocaleString('en-US', {
+    const formattedDate = date.toLocaleString('en-GB', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',
-        hour: 'numeric',
+        hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false
     })
 
     const dateWithoutCommas = formattedDate.split(',').join('')
