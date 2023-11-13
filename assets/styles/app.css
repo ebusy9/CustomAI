@@ -757,16 +757,16 @@ button {
 
 ::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: rgb(203, 228, 222, 0.2);
+    background: var(--color-four-transparent);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--color-four);
 }
 
 ::-webkit-scrollbar-thumb:active {
