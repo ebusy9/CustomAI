@@ -114,7 +114,6 @@ button {
 
 .modal-header {
     border-radius: 10px 10px 0 0;
-    /* background-color: var(--color-two); */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -137,6 +136,7 @@ button {
     font-size: large;
     font-weight: 500;
     margin-left: 10px;
+    cursor: default;
 }
 
 .close-modal-btn {
@@ -178,12 +178,20 @@ button {
     padding: 6px;
     padding-left: 3%;
     appearance: none;
-    background-image: url("data:image/svg+xml,<svg width='24' height='24' style='fill: var(--color-four);' xmlns='http://www.w3.org/2000/svg'><path d='m0,6l12,12l12,-12l-24,0z'/><path fill='none' d='m0,0l24,0l0,24l-24,0l0,-24z'/></svg>");
-    background-repeat: no-repeat;
-    background-size: 0.7em;
-    background-position-x: 97%;
-    background-position-y: center;
     outline: none;
+    cursor: pointer;
+    width: 100%
+}
+
+.select-container::after {
+    content: "";
+    width: 0; 
+    height: 0; 
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--color-four-transparent);
+    position: absolute;
+    transform: translate(-21px, 14px);
 }
 
 #model-select option {
@@ -210,10 +218,11 @@ button {
 
 .number-step-down-btn,
 .number-step-up-btn {
-    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-four-transparent);
     border: 1px solid var(--color-four-transparent);
-    height: 32px;
     cursor: pointer;
     font-size: 20px;
     width: 30px;
@@ -262,6 +271,7 @@ button {
 .modal-body .hint {
     margin-top: 4px;
     font-size: small;
+    cursor: default;
 }
 
 .modal-body .hint .hint-first-word {
@@ -281,16 +291,17 @@ button {
 }
 
 #show-system-msg-hint-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 10px 0px;
-    fill: var(--color-four);
-    background-color: transparent;
-    border: none;
     cursor: pointer;
     animation: arrow-blink 2s ease-out infinite;
 }
 
 #show-system-msg-hint-btn svg {
     height: 1.2rem;
+    fill: var(--color-four);
 }
 
 .color-selectors {
@@ -383,26 +394,13 @@ button {
     background-color: rgb(194, 252, 247);
 }
 
-/* .delete-modal-header {
-    flex-wrap: wrap;
-    border-radius: 10px 10px 0 0;
-    padding: 0 10px 0 10px;
-    min-height: 50px;
-    background-color: var(--color-two);
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    text-align: center;
-} */
-
-
 #delete-modal {
     max-width: 300px;
 }
 
 .delete-modal-text-content {
     text-align: center;
+    cursor: default;
 }
 
 .delete-modal-footer {
@@ -443,40 +441,6 @@ button {
     background-color: var(--color-four);
 }
 
-/* .modal-footer {
-    display: flex;
-    flex-direction: row-reverse;
-    border-top: 1px solid var(--color-four);
-}
-
-.apply-modal-btn {
-    display: flex;
-    flex-direction: row;
-    flex-flow: space-around;
-    align-items: center;
-    margin: 3% 20px;
-    color: var(--color-four);
-    border: 1px solid var(--color-four);
-    background-color: transparent;
-    border-radius: 5px;
-    cursor: pointer;
-    fill: var(--color-four);
-    padding: 3px 0;
-    width: 60px;
-
-}
-
-.apply-modal-btn:hover {
-    border: 1px solid var(--color-green);
-    color: var(--color-green);
-    fill: var(--color-green);
-}
-
-.apply-modal-btn svg {
-    height: 1.2rem;
-    width: 100%
-} */
-
 #messages {
     overflow-x: hidden;
     height: 92.8vh;
@@ -510,6 +474,10 @@ button {
 
 .message-content img {
     height: 1rem;
+}
+
+.date {
+    cursor: default;
 }
 
 .date img {
@@ -646,6 +614,34 @@ button {
     animation: blink 1s infinite;
 }
 
+#scroll-to-bottom {
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 0 10px 1px black;
+    height: 30px;
+    width: 30px;
+    fill: var(--color-four);
+    background-color: var(--color-two);
+    bottom: 90px;
+    right: 15px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 75%;
+    animation: opacity-scroll-to-top 250ms ease-in;
+    transition: 200ms ease-in-out;
+}
+
+
+#scroll-to-bottom svg {
+    height: 18px;
+}
+
+#scroll-to-bottom:hover {
+    opacity: 100%;
+}
+
 @keyframes blink {
 
     0%,
@@ -705,6 +701,16 @@ button {
 
     100% {
         opacity: 100%;
+    }
+}
+
+@keyframes opacity-scroll-to-top {
+    0% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 75%;
     }
 }
 
@@ -776,31 +782,4 @@ input[type="number"] {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
-}
-
-#scroll-to-bottom {
-    cursor: pointer;
-    border-radius: 50%;
-    position: absolute;
-    box-shadow: 0 0 10px 1px black;
-    height: 35px;
-    width: 35px;
-    fill: var(--color-four);
-    background-color: var(--color-two);
-    bottom: 90px;
-    right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 50%;
-    transition: 200ms ease-in-out;
-}
-
-
-#scroll-to-bottom svg {
-    height: 20px;
-}
-
-#scroll-to-bottom:hover {
-    opacity: 100%;
 }
