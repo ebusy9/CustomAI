@@ -608,11 +608,11 @@ button {
     fill: var(--color-red);
 }
 
-.blinking-cursor {
+/* .blinking-cursor {
     margin-left: 5px;
     background-color: var(--color-four);
     animation: blink 1s infinite;
-}
+} */
 
 #scroll-to-bottom {
     cursor: pointer;
@@ -642,7 +642,7 @@ button {
     opacity: 100%;
 }
 
-@keyframes blink {
+/* @keyframes blink {
 
     0%,
     50% {
@@ -650,10 +650,10 @@ button {
     }
 
     50.1%,
-    100% {
+    100% {ZZ
         opacity: 0;
     }
-}
+} */
 
 @keyframes fill {
     0% {
