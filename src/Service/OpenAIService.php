@@ -15,12 +15,20 @@ class OpenAIService
     private ?string $systemMessage = null;
     private int $contextLimit = 0;
     private int $temperature = 10;
+    private int $freeMsgSentToday = 0;
 
     public function __construct(
         $apiKey,
         private MessageRepository $messageRepository
     ) {
         $this->apiKey = $apiKey;
+
+        $freeMessages = $messageRepository->findBy(['role' => 'user', 'premiumUser' => null], ['createdAt' => 'DESC'], 4);
+        foreach ($freeMessages as $message) {
+            if($message->getCreatedAt()->format('d') === (new DateTimeImmutable())->format('d')){
+                $this->freeMsgSentToday++;
+            }
+        }
     }
 
 
@@ -103,7 +111,8 @@ class OpenAIService
         $responseArray = [
             'token' => $form->createView()->children['_token']->vars['value'],
             'models' => $models,
-            'messages' => $messagesArray
+            'messages' => $messagesArray,
+            'freeMsgTdy' => 4 - $this->freeMsgSentToday
         ];
 
         return $responseArray;
@@ -156,5 +165,10 @@ class OpenAIService
         }
 
         return $this->temperature / 10;
+    }
+
+    public function getFreeMsgSentToday(): int
+    {
+        return $this->freeMsgSentToday;
     }
 }

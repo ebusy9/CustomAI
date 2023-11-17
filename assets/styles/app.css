@@ -394,6 +394,43 @@ button {
     background-color: rgb(194, 252, 247);
 }
 
+#info-modal {
+    max-width: 350px;
+}
+
+.info-modal-text-content {
+    text-align: center;
+    cursor: default;
+}
+
+.info-modal-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 20px 10px 20px;
+}
+
+.info-modal-btn{
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+    color: unset;
+    border-radius: 5px;
+    transition: 200ms ease-in-out;
+}
+
+#info-ok-btn{
+    background-color: transparent;
+    border: 1px solid var(--color-four);
+    margin-left: 5px;
+}
+
+#info-ok-btn:hover{
+    color: var(--color-one);
+    background-color: var(--color-four);
+}
+
 #delete-modal {
     max-width: 300px;
 }
@@ -412,7 +449,6 @@ button {
 .delete-modal-btn {
     cursor: pointer;
     height: 30px;
-    width: 80px;
     color: unset;
     border-radius: 5px;
     transition: 200ms ease-in-out;

@@ -30,6 +30,9 @@ class Message
     #[ORM\Column]
     private bool $isDeleted = false;
 
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    private ?PremiumUser $premiumUser = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class Message
     public function setIsDeleted(bool $isDeleted): static
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getPremiumUser(): ?PremiumUser
+    {
+        return $this->premiumUser;
+    }
+
+    public function setPremiumUser(?PremiumUser $premiumUser): static
+    {
+        $this->premiumUser = $premiumUser;
 
         return $this;
     }
