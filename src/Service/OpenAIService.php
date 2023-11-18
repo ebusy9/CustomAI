@@ -142,6 +142,14 @@ class OpenAIService
         return $messages;
     }
 
+    public function markOneMessageAsDeleted(int $id): Message
+    {
+        $message = $this->messageRepository->findOneBy(['id' => $id]);
+        $message->setIsDeleted(true);
+
+        return $message;
+    }
+
 
     public function setSystemMessage(?string $systemMessage): void
     {
