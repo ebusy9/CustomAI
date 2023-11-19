@@ -112,7 +112,7 @@ class OpenAIService
             'token' => $form->createView()->children['_token']->vars['value'],
             'models' => $models,
             'messages' => $messagesArray,
-            'freeMsgTdy' => 4 - $this->freeMsgSentToday
+            'remainingFreeMsg' => 4 - $this->freeMsgSentToday
         ];
 
         return $responseArray;
