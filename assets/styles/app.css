@@ -185,8 +185,8 @@ button {
 
 .select-container::after {
     content: "";
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid var(--color-four-transparent);
@@ -411,7 +411,7 @@ button {
     margin: 20px 20px 10px 20px;
 }
 
-.info-modal-btn{
+.info-modal-btn {
     cursor: pointer;
     height: 30px;
     width: 80px;
@@ -420,13 +420,13 @@ button {
     transition: 200ms ease-in-out;
 }
 
-#info-ok-btn{
+#info-ok-btn {
     background-color: transparent;
     border: 1px solid var(--color-four);
     margin-left: 5px;
 }
 
-#info-ok-btn:hover{
+#info-ok-btn:hover {
     color: var(--color-one);
     background-color: var(--color-four);
 }
@@ -512,8 +512,34 @@ button {
     height: 1rem;
 }
 
+
+.date-container {
+    display: flex;
+}
+
+.assistant-container .date-container {
+    flex-direction: row-reverse;
+}
+
+.message-container:hover {
+    & .delete-msg-btn {
+        display: block;
+    }
+}
+
+.delete-msg-btn {
+    display: none;
+    cursor: pointer;
+    font-size: small;
+    color: var(--color-red);
+    fill: var(--color-red);
+}
+
 .date {
     cursor: default;
+    font-size: small;
+    margin: 0 8px;
+    fill: var(--color-four);
 }
 
 .date img {
@@ -540,12 +566,6 @@ button {
     animation: pop-assistant 0.6s ease-out;
 }
 
-.assistant-container .date {
-    font-size: small;
-    margin-right: 8px;
-    fill: var(--color-four);
-}
-
 .date-icon {
     height: 1em;
     margin-bottom: -2px;
@@ -568,12 +588,6 @@ button {
     flex-direction: column;
     align-items: start;
     animation: pop-user 0.6s ease-out;
-}
-
-.user-container .date {
-    font-size: small;
-    margin-left: 8px;
-    fill: var(--color-four);
 }
 
 .user {

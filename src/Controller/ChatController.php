@@ -49,12 +49,14 @@ class ChatController extends AbstractController
 
             if ($requestData['message'] === '*') {
                 $messages = $openAIService->markMessagesAsDeleted();
+                $quantity = count($messages);
             } elseif (gettype($requestData['message']) === 'integer') {
                 $messages = $openAIService->markOneMessageAsDeleted($requestData['message']);
+                $quantity = 1;
             }
 
             $entityManager->flush();
-            return new JsonResponse(['deletedQuantity' => count($messages)]);
+            return new JsonResponse(['deletedQuantity' => $quantity]);
         }
 
         return new JsonResponse($openAIService->getArrayWithAllMessagesForJsonEncode($form));
