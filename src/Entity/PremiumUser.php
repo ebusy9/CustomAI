@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PremiumUserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,6 +27,9 @@ class PremiumUser
 
     #[ORM\OneToMany(mappedBy: 'premiumUser', targetEntity: Message::class)]
     private Collection $messages;
+
+    #[ORM\Column]
+    private ?int $requestLimit = null;
 
     public function __construct()
     {
@@ -94,12 +98,36 @@ class PremiumUser
     public function removeMessage(Message $message): static
     {
         if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
             if ($message->getPremiumUser() === $this) {
                 $message->setPremiumUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function getRequestLimit(): ?int
+    {
+        return $this->requestLimit;
+    }
+
+    public function setRequestLimit(int $requestLimit): static
+    {
+        $this->requestLimit = $requestLimit;
+
+        return $this;
+    }
+
+    public function isPremiumUserValid(): bool
+    {
+        if($this->expiresAt < new DateTimeImmutable()) {
+            return false;
+        }
+
+        if (count($this->messages) >= $this->requestLimit) {
+            return false;
+        }
+
+        return true;
     }
 }

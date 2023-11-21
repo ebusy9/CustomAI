@@ -3,9 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Message;
+use App\Entity\OpenAIModel;
 use App\Repository\MessageRepository;
 use DateTimeImmutable;
+use OpenAI;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -16,6 +19,7 @@ class OpenAIService
     private int $contextLimit = 0;
     private int $temperature = 10;
     private int $freeMsgSentToday = 0;
+    const FREE_MSG_LIMIT = 4;
 
     public function __construct(
         $apiKey,
@@ -25,7 +29,7 @@ class OpenAIService
 
         $freeMessages = $messageRepository->findBy(['role' => 'user', 'premiumUser' => null], ['createdAt' => 'DESC'], 4);
         foreach ($freeMessages as $message) {
-            if($message->getCreatedAt()->format('d') === (new DateTimeImmutable())->format('d')){
+            if ($message->getCreatedAt()->format('d') === (new DateTimeImmutable())->format('d')) {
                 $this->freeMsgSentToday++;
             }
         }
@@ -57,30 +61,30 @@ class OpenAIService
 
         array_push($messages, ['role' => 'user', 'content' => $message->getContent()]);
 
-        // $client = OpenAI::factory()
-        //     ->withApiKey($this->apiKey)
-        //     ->withBaseUri('https://api.openai.com/v1/')
-        //     ->withHttpClient(new Psr18Client())
-        //     ->make();
 
-        // $result = $client->chat()->create([
-        //     'model' => $message
-        //         ->getModel()
-        //         ->getName(),
-        //     'messages' => $messages,
-        //     'temperature' => $this->getTemperature()
-        // ]);
 
-        // $response = $result->toArray();
+        $client = OpenAI::factory()
+            ->withApiKey($this->apiKey)
+            ->withBaseUri('https://api.openai.com/v1/')
+            ->withHttpClient(new Psr18Client())
+            ->make();
 
-        $response =  $this->messageRepository->findOneBy(['id' => 18]);
+        $result = $client->chat()->create([
+            'model' => $message
+                ->getModel()
+                ->getName(),
+            'messages' => $messages,
+            'temperature' => $this->getTemperature()
+        ]);
+
+        $response = $result->toArray();
 
         $responseMessageObject = (new Message())
-            // ->setContent($response['choices'][0]['message']['content'])
-            ->setContent($response->getContent())
+            ->setContent($response['choices'][0]['message']['content'])
+            ->setModel($message->getModel())
             ->setCreatedAt(new DateTimeImmutable())
-            ->setRole('assistant')
-            ->setModel($message->getModel());
+            ->setRole('assistant');
+
 
         return $responseMessageObject;
     }
@@ -112,7 +116,7 @@ class OpenAIService
             'token' => $form->createView()->children['_token']->vars['value'],
             'models' => $models,
             'messages' => $messagesArray,
-            'remainingFreeMsg' => 4 - $this->freeMsgSentToday
+            'remainingFreeMsg' => self::FREE_MSG_LIMIT - $this->freeMsgSentToday
         ];
 
         return $responseArray;
@@ -178,5 +182,14 @@ class OpenAIService
     public function getFreeMsgSentToday(): int
     {
         return $this->freeMsgSentToday;
+    }
+
+    public function isRemainingFreeMsg(): bool
+    {
+        if (self::FREE_MSG_LIMIT - $this->freeMsgSentToday <= 0) {
+            return false;
+        }
+
+        return true;
     }
 }

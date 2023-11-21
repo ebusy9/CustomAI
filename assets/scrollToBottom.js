@@ -4,7 +4,7 @@ const messagesElement = document.querySelector('#messages')
 messagesElement.addEventListener('scroll', displayScrollToBottomBtn)
 
 function displayScrollToBottomBtn(){
-    if(messagesElement.scrollTop < messagesElement.scrollHeight - messagesElement.clientHeight * 2) {
+    if(messagesElement.scrollTop < messagesElement.scrollHeight - Math.floor(messagesElement.clientHeight * 1.5)) {
         scrollToBottomBtn.style.display = 'flex'
     } else {
         scrollToBottomBtn.style.display = null

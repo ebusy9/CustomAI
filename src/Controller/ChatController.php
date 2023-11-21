@@ -30,18 +30,23 @@ class ChatController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $openAIService->setContextLimit($form->get('contextLimit')->getData());
-            $openAIService->setSystemMessage($form->get('systemMessage')->getData());
-            $openAIService->setTemperature($form->get('temperature')->getData());
-            $message->setCreatedAt(new DateTimeImmutable())
-                ->setRole('user');
-            $response = $openAIService->generateResponse($message);
 
-            $entityManager->persist($message);
-            $entityManager->persist($response);
-            $entityManager->flush();
+            if ($openAIService->isRemainingFreeMsg()) {
+                $openAIService->setContextLimit($form->get('contextLimit')->getData());
+                $openAIService->setSystemMessage($form->get('systemMessage')->getData());
+                $openAIService->setTemperature($form->get('temperature')->getData());
+                $message->setCreatedAt(new DateTimeImmutable())
+                    ->setRole('user');
+                $response = $openAIService->generateResponse($message);
 
-            return new JsonResponse($openAIService->getArrayWithResponseForJsonEncode($form, $response, $message));
+                $entityManager->persist($message);
+                $entityManager->persist($response);
+                $entityManager->flush();
+
+                return new JsonResponse($openAIService->getArrayWithResponseForJsonEncode($form, $response, $message));
+            }
+
+            return new Response(status: Response::HTTP_UNAUTHORIZED);
         }
 
         if ($request->isMethod('DELETE')) {

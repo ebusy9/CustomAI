@@ -6,6 +6,7 @@
     --color-four-transparent: rgb(225, 225, 250, .5);
     --color-red: #DD4A48;
     --color-green: #B6E388;
+    --color-blue: #2274A5;
 }
 
 body {
@@ -498,6 +499,7 @@ button {
 
 .message-content {
     max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 .message-content :first-child {
@@ -523,16 +525,25 @@ button {
 
 .message-container:hover {
     & .delete-msg-btn {
-        display: block;
+        opacity: 100;
     }
 }
 
 .delete-msg-btn {
-    display: none;
+    opacity: 0;
     cursor: pointer;
     font-size: small;
     color: var(--color-red);
     fill: var(--color-red);
+    transition: 200ms ease-in-out;
+}
+
+.assistant-container .delete-msg-btn:after {
+    content: ' Delete';
+}
+
+.user-container .delete-msg-btn:before {
+    content: 'Delete ';
 }
 
 .date {
@@ -546,14 +557,36 @@ button {
     height: 1rem;
 }
 
-.loading-failed {
+.info-message {
+    border: 1px solid var(--color-blue) !important;
+    color: var(--color-blue) !important;
+    fill: var(--color-blue) !important;
+    background-color: transparent !important;
+}
+
+.info-message a {
+    cursor: pointer;
+    color: var(--color-blue) !important;
+}
+
+.info-date {
+    color: var(--color-blue) !important;
+    fill: var(--color-blue) !important;
+}
+
+.error-message {
     border: 1px solid var(--color-red) !important;
     color: var(--color-red) !important;
     fill: var(--color-red) !important;
     background-color: transparent !important;
 }
 
-.date-loading-failed {
+.error-message a {
+    cursor: pointer;
+    color: var(--color-red) !important;
+}
+
+.error-date {
     color: var(--color-red) !important;
     fill: var(--color-red) !important;
 }
@@ -568,7 +601,7 @@ button {
 
 .date-icon {
     height: 1em;
-    margin-bottom: -2px;
+    transform: translateY(2px);
 }
 
 .assistant {
