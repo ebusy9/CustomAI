@@ -51,6 +51,19 @@ class OpenAIService
         }
     }
 
+    public function vertifyPassword(string $password): bool
+    {
+        $premiumUsers = $this->premiumUserRepository->findAll();
+
+        foreach ($premiumUsers as $premiumUser) {
+            if (password_verify($password, $premiumUser->getPassword()) && $premiumUser->isValid()) {
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public function stampUserMessage(Message $message): Message
     {
         $message->setCreatedAt(new DateTimeImmutable())

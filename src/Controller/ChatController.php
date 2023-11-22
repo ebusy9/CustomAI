@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Form\KeyVerificationType;
 use App\Form\MessageType;
 use App\Service\OpenAIService;
 use DateTimeImmutable;
@@ -22,6 +23,28 @@ class ChatController extends AbstractController
     }
 
 
+    #[Route('/key_verification', name: 'app_key_verification', methods: ['GET', 'POST'])]
+    public function keyVerification(Request $request, OpenAIService $openAIService): Response
+    {
+
+        if ($request->isMethod('POST') ) {
+
+            $requestData = json_decode($request->getContent(), true);
+
+            if(isset($requestData['key'])) {
+
+                if($openAIService->vertifyPassword($requestData['key'])) {
+                    return  new JsonResponse(['keyStatus' => 'valid']);
+                }
+
+                return  new JsonResponse(['keyStatus' => 'invalid']);
+            }
+        }
+
+        return new Response(status: Response::HTTP_BAD_REQUEST);
+    }
+
+
     #[Route('/api/gpt', name: 'api_pgt', methods: ['GET', 'POST', 'DELETE'])]
     public function gpt(Request $request, EntityManagerInterface $entityManager, OpenAIService $openAIService): Response
     {
@@ -31,8 +54,7 @@ class ChatController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($form->get('premiumUser')->getData() !== null)
-            {
+            if ($form->get('premiumUser')->getData() !== null) {
                 $openAIService->loginPremiumUser($form->get('premiumUser')->getData());
             }
 
@@ -69,6 +91,10 @@ class ChatController extends AbstractController
             return new JsonResponse(['deletedQuantity' => $quantity]);
         }
 
-        return new JsonResponse($openAIService->prepareJsonResponseForMessagesAndModels($form));
+        if ($request->isMethod('GET')) {
+            return new JsonResponse($openAIService->prepareJsonResponseForMessagesAndModels($form));
+        }
+
+        return new Response(status: Response::HTTP_BAD_REQUEST);
     }
 }

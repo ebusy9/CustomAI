@@ -422,11 +422,19 @@ button {
     display: flex;
 }
 
+.invalid-key {
+    border: 1px solid var(--color-red) !important;
+}
+
+.valid-key {
+    border: 1px solid var(--color-green) !important;
+}
+
 .key-input-wrapper {
     width: 100%;
 }
 
-.key-input-wrapper input {
+#key-input {
     border: none;
     outline: none;
     background-color: transparent;
@@ -439,22 +447,23 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 6px;
 }
 
-.key-status-loading {
+#key-status-loading {
     display: none;
     fill: var(--color-four);
     height: 1em;
     animation: full-rotation linear 1s infinite;
 }
 
-.key-status-wrong {
+#key-status-invalid {
     display: none;
     fill: var(--color-red);
     height: 1em;
 }
 
-.key-status-correct {
+#key-status-valid {
     display: none;
     fill: var(--color-green);
     height: 1em;

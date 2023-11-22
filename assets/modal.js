@@ -12,7 +12,7 @@ const infoOkBtn = document.querySelector('#info-ok-btn')
 
 
 modalElements.forEach((modal) => {
-    window.addEventListener('click', (e) => {
+    window.addEventListener('mousedown', (e) => {
         if (e.target === modal.parentElement) {
             closeModal(modal)
         }
