@@ -154,7 +154,7 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 20px;
+    margin: 0 20px 20px 20px;
 }
 
 .modal-body label {
@@ -304,7 +304,6 @@ button {
     display: flex;
     flex-direction: row;
     height: 32px;
-    margin-bottom: 20px;
 }
 
 .select-color-btn {
@@ -419,20 +418,46 @@ button {
 .key-input-container {
     border: 1px solid var(--color-four-transparent);
     border-radius: 5px;
+    padding: 6px;
     display: flex;
-    flex-direction: row;
 }
 
-.key-input-container div{
+.key-input-wrapper {
+    width: 100%;
+}
+
+.key-input-wrapper input {
     border: none;
-    background-color: var(--color-blue);
-    width: fit-content;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    color: unset;
 }
 
-.key-input-status {
-    background-color: var(--color-red);
+.key-status-indicator {
     width: 25px;
-    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.key-status-loading {
+    display: none;
+    fill: var(--color-four);
+    height: 1em;
+    animation: full-rotation linear 1s infinite;
+}
+
+.key-status-wrong {
+    display: none;
+    fill: var(--color-red);
+    height: 1em;
+}
+
+.key-status-correct {
+    display: none;
+    fill: var(--color-green);
+    height: 1em;
 }
 
 #info-ok-btn {
@@ -844,6 +869,12 @@ button {
     100% {
         translate: 0;
         opacity: 100%;
+    }
+}
+
+@keyframes full-rotation {
+    100% {
+        transform: rotate(360deg);
     }
 }
 

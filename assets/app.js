@@ -483,8 +483,8 @@ function warningMsgFormSubmitFailed(isInfoMessage = false) {
 
 function removeWarningMsgFormSubmitFailed() {
     if (document.querySelector('.loading-failed') !== null) {
-        document.querySelectorAll('.loading-failed').forEach((div) => {
-            div.parentElement.remove()
+        document.querySelectorAll('.loading-failed').forEach((element) => {
+            element.parentElement.remove()
         })
     }
 }
@@ -627,7 +627,6 @@ function generateMessageHtml(message, messageContent, uuid) {
                     <div class="message-content">${messageContent}</div>
                 </div>
                 <div class="date-container">
-
                     <div class="date">${getFormattedDate(message['createdAt']['timestamp'], message)}</div>
                 </div>
             </div>`

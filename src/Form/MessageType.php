@@ -34,6 +34,12 @@ class MessageType extends AbstractType
                 'label' => false,
                 'constraints' => new Range(min: 0, max: 20)
             ])
+            ->add('premiumUser', TextType::class, [
+                'mapped' => false,
+                'mapped' => false,
+                'required' => false,
+                'label' => false,
+            ])
         ;
     }
 

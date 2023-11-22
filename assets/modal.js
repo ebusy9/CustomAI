@@ -24,6 +24,15 @@ modalElements.forEach((modal) => {
 })
 
 
+window.addEventListener('keyup', (e) => {
+    if(e.code === 'Escape') {
+        modalElements.forEach((modal) => {
+        closeModal(modal)
+        })
+    }
+})
+
+
 settingsBtn.addEventListener('click', openSettingsModal)
 
 

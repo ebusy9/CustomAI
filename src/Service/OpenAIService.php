@@ -4,7 +4,9 @@ namespace App\Service;
 
 use App\Entity\Message;
 use App\Entity\OpenAIModel;
+use App\Entity\PremiumUser;
 use App\Repository\MessageRepository;
+use App\Repository\PremiumUserRepository;
 use DateTimeImmutable;
 use OpenAI;
 use Symfony\Component\Form\Form;
@@ -19,11 +21,13 @@ class OpenAIService
     private int $contextLimit = 0;
     private int $temperature = 10;
     private int $freeMsgSentToday = 0;
+    private ?PremiumUser $premiumUser = null;
     const FREE_MSG_LIMIT = 4;
 
     public function __construct(
         $apiKey,
-        private MessageRepository $messageRepository
+        private MessageRepository $messageRepository,
+        private PremiumUserRepository $premiumUserRepository
     ) {
         $this->apiKey = $apiKey;
 
@@ -33,6 +37,30 @@ class OpenAIService
                 $this->freeMsgSentToday++;
             }
         }
+    }
+
+
+    public function loginPremiumUser(string $password): void
+    {
+        $premiumUsers = $this->premiumUserRepository->findAll();
+
+        foreach ($premiumUsers as $premiumUser) {
+            if (password_verify($password, $premiumUser->getPassword())) {
+                    $this->premiumUser = $premiumUser;
+            }
+        }
+    }
+
+    public function stampUserMessage(Message $message): Message
+    {
+        $message->setCreatedAt(new DateTimeImmutable())
+        ->setRole('user');
+
+        if($this->isPremiumUserValidAndLoggedIn()){
+            $message->setPremiumUser($this->premiumUser);
+        }
+
+        return $message;
     }
 
 
@@ -83,15 +111,15 @@ class OpenAIService
             ->setContent($response['choices'][0]['message']['content'])
             ->setModel($message->getModel())
             ->setCreatedAt(new DateTimeImmutable())
-            ->setRole('assistant');
+            ->setRole('assistant')
+            ->setPremiumUser($this->premiumUser);
 
 
         return $responseMessageObject;
     }
 
 
-
-    public function getArrayWithAllMessagesForJsonEncode(Form $form): array
+    public function prepareJsonResponseForMessagesAndModels(Form $form): array
     {
 
         $serializer = new Serializer([new ObjectNormalizer()], []);
@@ -100,9 +128,12 @@ class OpenAIService
         $messagesArray = [];
 
         if ($messages !== []) {
-            foreach ($messages as $value) {
-                $valueArray = $serializer->normalize($value, null);
-                array_push($messagesArray, $valueArray);
+            foreach ($messages as $message) {
+                $messageClone = clone $message;
+                $messageClone->setPremiumUser(null);
+                $messageArray = $serializer->normalize($messageClone, null);
+                unset($messageArray['premiumUser']);
+                array_push($messagesArray, $messageArray);
             }
         }
 
@@ -123,15 +154,21 @@ class OpenAIService
     }
 
 
-    public function getArrayWithResponseForJsonEncode(Form $form, Message $assistantMessage, Message $userMessage): array
+    public function prepareJsonResponseForMessages(Form $form, Message $assistantMessage, Message $userMessage): array
     {
         $serializer = new Serializer([new ObjectNormalizer()], []);
+
+        $assistantMessage->setPremiumUser(null);
+        $userMessage->setPremiumUser(null);
 
         $response = [
             'token' => $form->createView()->children['_token']->vars['value'],
             'userMessage' => $serializer->normalize($userMessage, null),
             'assistantMessage' => $serializer->normalize($assistantMessage, null)
         ];
+
+        unset($response['userMessage']['premiumUser']);
+        unset($response['assistantMessage']['premiumUser']);
 
         return $response;
     }
@@ -187,6 +224,21 @@ class OpenAIService
     public function isRemainingFreeMsg(): bool
     {
         if (self::FREE_MSG_LIMIT - $this->freeMsgSentToday <= 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPremiumUserValidAndLoggedIn(): bool
+    {
+        if($this->premiumUser === null)
+        {
+            return false;
+        }
+
+        if(!$this->premiumUser->isValid())
+        {
             return false;
         }
 

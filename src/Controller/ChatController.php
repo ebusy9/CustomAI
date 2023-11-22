@@ -31,19 +31,24 @@ class ChatController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($openAIService->isRemainingFreeMsg()) {
+            if($form->get('premiumUser')->getData() !== null)
+            {
+                $openAIService->loginPremiumUser($form->get('premiumUser')->getData());
+            }
+
+            if ($openAIService->isRemainingFreeMsg() || $openAIService->isPremiumUserValidAndLoggedIn()) {
                 $openAIService->setContextLimit($form->get('contextLimit')->getData());
                 $openAIService->setSystemMessage($form->get('systemMessage')->getData());
                 $openAIService->setTemperature($form->get('temperature')->getData());
-                $message->setCreatedAt(new DateTimeImmutable())
-                    ->setRole('user');
+
+                $message = $openAIService->stampUserMessage($message);
                 $response = $openAIService->generateResponse($message);
 
                 $entityManager->persist($message);
                 $entityManager->persist($response);
                 $entityManager->flush();
 
-                return new JsonResponse($openAIService->getArrayWithResponseForJsonEncode($form, $response, $message));
+                return new JsonResponse($openAIService->prepareJsonResponseForMessages($form, $response, $message));
             }
 
             return new Response(status: Response::HTTP_UNAUTHORIZED);
@@ -64,6 +69,6 @@ class ChatController extends AbstractController
             return new JsonResponse(['deletedQuantity' => $quantity]);
         }
 
-        return new JsonResponse($openAIService->getArrayWithAllMessagesForJsonEncode($form));
+        return new JsonResponse($openAIService->prepareJsonResponseForMessagesAndModels($form));
     }
 }

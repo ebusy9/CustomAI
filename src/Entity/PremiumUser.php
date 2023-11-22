@@ -118,12 +118,12 @@ class PremiumUser
         return $this;
     }
 
-    public function isPremiumUserValid(): bool
+    public function isValid(): bool
     {
         if($this->expiresAt < new DateTimeImmutable()) {
             return false;
         }
-
+        
         if (count($this->messages) >= $this->requestLimit) {
             return false;
         }
