@@ -195,9 +195,6 @@ async function submitFormUpdateMessages(event) {
     try {
         const response = await fetch(apiURL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
             body: formData
         })
 

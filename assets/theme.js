@@ -54,4 +54,13 @@ function setTheme(theme) {
     rootElement.style.setProperty('--color-three', theme.secondaryColor)
     rootElement.style.setProperty('--color-four', theme.fontColor)
     rootElement.style.setProperty('--color-four-transparent', theme.fontColorTransparent)
+    localStorage.setItem('theme', JSON.stringify(theme))
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    let theme = localStorage.getItem('theme')
+
+    if (theme !== '') {
+        setTheme(JSON.parse(theme))
+    }
+})
