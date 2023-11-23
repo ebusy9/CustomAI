@@ -96,5 +96,8 @@ function hideAllIndicators() {
 
 document.addEventListener("DOMContentLoaded", () => {
     keyInputEl.value = localStorage.getItem('key')
-    verifyKey(localStorage.getItem('key'))
+
+    if(keyInputEl.value !== ''){
+      verifyKey(localStorage.getItem('key'))
+    }
 })
