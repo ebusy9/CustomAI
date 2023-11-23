@@ -26,7 +26,6 @@ class ChatController extends AbstractController
     #[Route('/key_verification', name: 'app_key_verification', methods: ['GET', 'POST'])]
     public function keyVerification(Request $request, OpenAIService $openAIService): Response
     {
-
         if ($request->isMethod('POST') ) {
 
             $requestData = json_decode($request->getContent(), true);

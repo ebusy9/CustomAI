@@ -450,6 +450,12 @@ button {
     margin-left: 6px;
 }
 
+#key-status-error {
+    display: none;
+    fill: var(--color-red);
+    height: 1em;
+}
+
 #key-status-loading {
     display: none;
     fill: var(--color-four);
