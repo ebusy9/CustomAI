@@ -126,11 +126,11 @@ async function updateMessagesAndForm() {
             showRemainingMsgModal(responseData.remainingFreeMsg)
         }
 
-        removeWarningUpdateMsgFailed()
+        removeErrorMsgUpdateFailed()
         insertMessagesAndConfigureForm(responseData)
     } catch (error) {
         console.log(error)
-        warningUpdateMsgFailed()
+        showErrorMsgUpdateFailed()
     }
 }
 
@@ -309,13 +309,6 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
     message.parentElement.style.display = null
     message.parentElement.parentNode.style.display = null
 
-    // if (textIndex === 0) {
-    //     cursor = document.createElement('span')
-    //     cursor.className = 'blinking-cursor'
-    //     cursor.textContent = '|'
-    //     message.parentElement.insertBefore(cursor, message.textNode.nextSibling)
-    // }
-
     if (textIndex < message.textContent.length && message.textContent !== '\n') {
         message.textNode.textContent = message.textContent.slice(0, textIndex) + '█'
 
@@ -329,7 +322,6 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
 
     } else {
         message.textNode.textContent = message.textContent
-        // cursor.remove()
         if (typeof extractedText[msgIndex + 1] !== 'undefined') {
 
             setTimeout(() => {
@@ -478,6 +470,7 @@ function warningMsgFormSubmitFailed(isInfoMessage = false) {
         assistantContainerDate.innerHTML = warningIcon + ' CustomAI | ' + getFormattedDate()
     }
 
+    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight })
 }
 
 
@@ -490,7 +483,7 @@ function removeWarningMsgFormSubmitFailed() {
 }
 
 
-function warningUpdateMsgFailed() {
+function showErrorMsgUpdateFailed() {
     if (messagesDiv.querySelector('.user-container') === null
         && messagesDiv.querySelector('.assistant-container') === null
         && messagesDiv.querySelector('#update-failed-err-msg') === null) {
@@ -499,7 +492,7 @@ function warningUpdateMsgFailed() {
 }
 
 
-function removeWarningUpdateMsgFailed() {
+function removeErrorMsgUpdateFailed() {
     const warningMessage = document.querySelector('#update-failed-err-msg')
     if (warningMessage !== null) {
         warningMessage.remove()

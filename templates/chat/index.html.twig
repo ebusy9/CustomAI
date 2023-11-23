@@ -67,9 +67,13 @@
 					</div>
 					<label for="context-limit-input">Context Limit:</label>
 					<div class="number-input-container">
-						<div class="number-step-down-btn" id="context-limit-input-minus">-</div>
+						<div class="number-step-down-btn" id="context-limit-input-minus">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+						</div>
 						<input type="number" name="message[contextLimit]" class="number-input" id="context-limit-input" min="0" max="10" value="0" readonly tabindex="-1">
-						<div class="number-step-up-btn" id="context-limit-input-plus">+</div>
+						<div class="number-step-up-btn" id="context-limit-input-plus">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+						</div>
 					</div>
 					<div class="hint">
 						<span class="hint-first-word">Hint:</span>
@@ -78,10 +82,12 @@
 					<label for="temperature-input">Temperature:</label>
 					<div class="number-input-container">
 						<div class="number-step-down-btn" id="temperature-input-minus">
-							-
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
 						</div>
 						<input type="number" name="message[temperature]" class="number-input" id="temperature-input" min="0" max="20" value="10" readonly tabindex="-1">
-						<div class="number-step-up-btn" id="temperature-input-plus">+</div>
+						<div class="number-step-up-btn" id="temperature-input-plus">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+						</div>
 					</div>
 					<div class="hint">
 						<span class="hint-first-word">Hint:</span>
@@ -93,12 +99,13 @@
 					</div>
 					<div class="hint">
 						<span class="hint-first-word">Hint:</span>
-						The system message helps set the behavior of the assistant.<span id="system-msg-hidden-hint-text">
-							For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.</span>
+						The system message helps set the behavior of the assistant.
+						{# <span id="system-msg-hidden-hint-text">
+							For example, you can modify the personality of the assistant or provide specific instructions about how it should behave throughout the conversation.</span> #}
 					</div>
-					<div id="show-system-msg-hint-btn">
+					{# <div id="show-system-msg-hint-btn">
 						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
-					</div>
+					</div> #}
 
 					<label>Theme:</label>
 					<div class="color-selectors">

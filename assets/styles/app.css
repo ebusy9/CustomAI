@@ -41,7 +41,7 @@ button {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--color-four);
-    animation: pop-modal 0.6s ease-out;
+    animation: fadeInUp 0.6s ease-out;
 }
 
 #app-title {
@@ -104,7 +104,7 @@ button {
     background-color: var(--color-one);
     max-width: 500px;
     border-radius: 10px;
-    animation: pop-modal 0.6s ease-out;
+    animation: fadeInUp 0.6s ease-out;
     box-shadow: 0 0 10px 1px black;
 }
 
@@ -217,12 +217,15 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-four-transparent);
+    fill: var(--color-four-transparent);
     border: 1px solid var(--color-four-transparent);
     cursor: pointer;
-    font-size: 20px;
     width: 30px;
     transition: 200ms ease-in-out;
+
+    & svg {
+        height: 12px;
+    }
 }
 
 .number-step-down-btn {
@@ -232,7 +235,7 @@ button {
 
 .number-step-down-btn:hover {
     border-color: var(--color-red);
-    color: var(--color-red);
+    fill: var(--color-red);
 }
 
 .number-step-up-btn {
@@ -242,7 +245,7 @@ button {
 
 .number-step-up-btn:hover {
     border-color: var(--color-green);
-    color: var(--color-green);
+    fill: var(--color-green);
 }
 
 .textarea-container {
@@ -274,7 +277,7 @@ button {
     font-weight: 700;
 }
 
-#system-msg-hidden-hint-text {
+/* #system-msg-hidden-hint-text {
     display: none;
     margin-bottom: 20px;
     animation: fill 0.6s;
@@ -298,7 +301,7 @@ button {
 #show-system-msg-hint-btn svg {
     height: 1.2rem;
     fill: var(--color-four);
-}
+} */
 
 .color-selectors {
     display: flex;
@@ -460,7 +463,7 @@ button {
     display: none;
     fill: var(--color-four);
     height: 1em;
-    animation: full-rotation linear 1s infinite;
+    animation: fullRotation linear 1s infinite;
 }
 
 #key-status-invalid {
@@ -544,7 +547,7 @@ button {
     color: var(--color-red);
     fill: var(--color-red);
     margin-top: 20px;
-    animation: pop-modal 0.6s ease-out;
+    animation: fadeInUp 0.6s ease-out;
 }
 
 #update-failed-err-msg svg {
@@ -577,10 +580,10 @@ button {
     flex-direction: row-reverse;
 }
 
-.message-container:hover {
-    & .delete-msg-btn {
-        opacity: 100;
-    }
+.user:hover + .date-container .delete-msg-btn,
+.assistant:hover + .date-container .delete-msg-btn,
+.date-container:hover .delete-msg-btn {
+    opacity: 100;
 }
 
 .delete-msg-btn {
@@ -650,7 +653,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: end;
-    animation: pop-assistant 0.6s ease-out;
+    animation: fadeInRight 0.6s ease-out;
 }
 
 .date-icon {
@@ -674,7 +677,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: start;
-    animation: pop-user 0.6s ease-out;
+    animation: fadeInLeft 0.6s ease-out;
 }
 
 .user {
@@ -712,7 +715,7 @@ button {
     justify-content: space-between;
     align-items: center;
     border: 2px solid var(--color-one);
-    animation: pop-chatinput 0.6s ease-out;
+    animation: fadeInDown 0.6s ease-out;
 }
 
 #msg-input {
@@ -745,12 +748,6 @@ button {
     fill: var(--color-red);
 }
 
-/* .blinking-cursor {
-    margin-left: 5px;
-    background-color: var(--color-four);
-    animation: blink 1s infinite;
-} */
-
 #scroll-to-bottom {
     cursor: pointer;
     border-radius: 50%;
@@ -770,7 +767,6 @@ button {
     transition: 200ms ease-in-out;
 }
 
-
 #scroll-to-bottom svg {
     height: 18px;
 }
@@ -778,19 +774,6 @@ button {
 #scroll-to-bottom:hover {
     opacity: 100%;
 }
-
-/* @keyframes blink {
-
-    0%,
-    50% {
-        opacity: 1;
-    }
-
-    50.1%,
-    100% {ZZ
-        opacity: 0;
-    }
-} */
 
 @keyframes fill {
     0% {
@@ -802,9 +785,45 @@ button {
     }
 }
 
-@keyframes pop-modal {
+@keyframes fadeInUp {
     0% {
-        translate: 0% -10%;
+        translate: 0% -25px;
+        opacity: 0%;
+    }
+
+    100% {
+        translate: 0;
+        opacity: 100%;
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        translate: 0% 25px;
+        opacity: 0%;
+    }
+
+    100% {
+        translate: 0;
+        opacity: 100%;
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        translate: 25px;
+        opacity: 0%;
+    }
+
+    100% {
+        translate: 0;
+        opacity: 100%;
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+        translate: -25px;
         opacity: 0%;
     }
 
@@ -851,43 +870,7 @@ button {
     }
 }
 
-@keyframes pop-assistant {
-    0% {
-        translate: 2%;
-        opacity: 0%;
-    }
-
-    100% {
-        translate: 0;
-        opacity: 100%;
-    }
-}
-
-@keyframes pop-user {
-    0% {
-        translate: -2%;
-        opacity: 0%;
-    }
-
-    100% {
-        translate: 0;
-        opacity: 100%;
-    }
-}
-
-@keyframes pop-chatinput {
-    0% {
-        translate: 0% 10%;
-        opacity: 0%;
-    }
-
-    100% {
-        translate: 0;
-        opacity: 100%;
-    }
-}
-
-@keyframes full-rotation {
+@keyframes fullRotation {
     100% {
         transform: rotate(360deg);
     }
