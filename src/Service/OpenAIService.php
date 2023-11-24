@@ -104,24 +104,27 @@ class OpenAIService
 
 
 
-        $client = OpenAI::factory()
-            ->withApiKey($this->apiKey)
-            ->withBaseUri('https://api.openai.com/v1/')
-            ->withHttpClient(new Psr18Client())
-            ->make();
+        // $client = OpenAI::factory()
+        //     ->withApiKey($this->apiKey)
+        //     ->withBaseUri('https://api.openai.com/v1/')
+        //     ->withHttpClient(new Psr18Client())
+        //     ->make();
 
-        $result = $client->chat()->create([
-            'model' => $message
-                ->getModel()
-                ->getName(),
-            'messages' => $messages,
-            'temperature' => $this->getTemperature()
-        ]);
+        // $result = $client->chat()->create([
+        //     'model' => $message
+        //         ->getModel()
+        //         ->getName(),
+        //     'messages' => $messages,
+        //     'temperature' => $this->getTemperature()
+        // ]);
 
-        $response = $result->toArray();
+        // $response = $result->toArray();
+
+        $message = $this->messageRepository->findOneBy(['id' => 23]);
 
         $responseMessageObject = (new Message())
-            ->setContent($response['choices'][0]['message']['content'])
+            // ->setContent($response['choices'][0]['message']['content'])
+            ->setContent($message->getContent())
             ->setModel($message->getModel())
             ->setCreatedAt(new DateTimeImmutable())
             ->setRole('assistant')

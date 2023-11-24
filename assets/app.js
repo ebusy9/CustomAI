@@ -1,6 +1,7 @@
 import hljs from 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js'
 
 const apiURL = 'api/gpt'
+const chatEl = document.querySelector('#chat')
 const submitBtn = document.querySelector('#sub-btn')
 const token = document.querySelector('#token')
 const messagesDiv = document.querySelector('#messages')
@@ -210,9 +211,10 @@ async function submitFormUpdateMessages(event) {
         messagesLoaded(responseData)
     } catch (error) {
         warningMsgFormSubmitFailed()
+        isChatInputDisabled = false
     }
 
-    isChatInputDisabled = false
+
     updateMessagesAndFormInterval = setInterval(updateMessagesAndForm, 6000)
 }
 
@@ -243,7 +245,9 @@ function messagesLoading(messageSentContent) {
     messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     setTimeout(() => {
         assistantLoadingContainer.style.display = null
-        messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+        if (document.querySelector('#loading-assistant-container') !== null) {
+            messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+        }
     }, 400)
 }
 
@@ -295,7 +299,9 @@ function typeMessage(loadingMessageContentDiv, assistantMessageContent) {
 
     const bottomPaddingElementHeight = setDivWidthWithContent(loadingMessageContentDiv)
 
-    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+    if (!bottomPaddingElementHeight >= Math.floor(document.body.clientHeight * 0.92)) {
+        messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
+    }
 
     const extractedText = extractTextBetweenTags(loadingMessageContentDiv)
 
@@ -330,7 +336,7 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
 
 
         } else {
-
+            isChatInputDisabled = false
             loadingMessageContentDiv.style.width = null
             loadingMessageContentDiv.parentElement.style.overflowX = null
             bottomPaddingElement.style.height = null
@@ -651,13 +657,24 @@ function extractTextBetweenTags(loadingMessageContentDiv) {
 
 
 function setDivWidthWithContent(div) {
-    const cloneDiv = div.cloneNode(true)
-    cloneDiv.style.position = 'absolute'
-    cloneDiv.style.top = '-1000px'
-    document.body.appendChild(cloneDiv)
-    const width = cloneDiv.clientWidth
-    bottomPaddingElement.style.height = bottomPaddingElement.clientHeight + cloneDiv.clientHeight - 22 + 34 + 'px'
-    document.body.removeChild(cloneDiv)
+    const cloneDivEl = div.cloneNode(true)
+    const cloneDivWrapperEl = document.createElement('div')
+    cloneDivWrapperEl.style.margin = '8p'
+    cloneDivWrapperEl.style.maxWidth = '75vw'
+    cloneDivWrapperEl.style.padding = '1rem'
+
+    cloneDivWrapperEl.appendChild(cloneDivEl)
+
+    cloneDivWrapperEl.style.position = 'absolute'
+    cloneDivWrapperEl.style.top = '-1000px'
+
+    chatEl.appendChild(cloneDivWrapperEl)
+
+    const width = cloneDivEl.clientWidth
+
+    bottomPaddingElement.style.height = bottomPaddingElement.clientHeight + cloneDivEl.clientHeight - 32 + 'px'
+
+    chatEl.removeChild(cloneDivWrapperEl)
 
     div.style.width = `${width}px`
     div.parentElement.style.overflowX = 'hidden'
