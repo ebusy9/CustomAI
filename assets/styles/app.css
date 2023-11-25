@@ -10,7 +10,7 @@
 }
 
 body {
-    height: 100vh;
+    height: 100dvh;
     margin: 0;
     background-color: var(--color-one);
     color: var(--color-four);
@@ -35,7 +35,7 @@ button {
 }
 
 #chat-title {
-    height: 7vh;
+    height: 7dvh;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -186,8 +186,9 @@ button {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid var(--color-four-transparent);
-    position: absolute;
-    transform: translate(-21px, 14px);
+    position: relative;
+    left: -21px;
+    bottom: -14px;
 }
 
 #model-select option {
@@ -537,9 +538,9 @@ button {
 
 #messages {
     overflow-x: hidden;
-    height: 92.8vh;
+    height: 92.8dvh;
     overflow-y: scroll;
-    margin-bottom: 5vh;
+    margin-bottom: 5dvh;
 }
 
 #update-failed-err-msg {
@@ -580,8 +581,8 @@ button {
     flex-direction: row-reverse;
 }
 
-.user:hover + .date-container .delete-msg-btn,
-.assistant:hover + .date-container .delete-msg-btn,
+.user:hover+.date-container .delete-msg-btn,
+.assistant:hover+.date-container .delete-msg-btn,
 .date-container:hover .delete-msg-btn {
     opacity: 100;
 }
@@ -595,11 +596,11 @@ button {
     transition: 200ms ease-in-out;
 }
 
-.assistant-container .delete-msg-btn:after {
+.assistant-container .delete-msg-btn::after {
     content: ' Delete';
 }
 
-.user-container .delete-msg-btn:before {
+.user-container .delete-msg-btn::before {
     content: 'Delete ';
 }
 
@@ -662,7 +663,7 @@ button {
 }
 
 .assistant {
-    max-width: 75vw;
+    max-width: 75dvw;
     background-color: var(--color-two);
     align-items: end;
     display: flex;
@@ -681,7 +682,7 @@ button {
 }
 
 .user {
-    max-width: 75vw;
+    max-width: 75dvw;
     background-color: var(--color-three);
     align-items: start;
     display: flex;
@@ -696,7 +697,7 @@ button {
 }
 
 #form-chat {
-    width: 100vw;
+    width: 100dvw;
     position: absolute;
     z-index: 2;
     bottom: 20px;
@@ -721,7 +722,7 @@ button {
 #msg-input {
     resize: none;
     overflow-y: auto;
-    max-height: 10vh;
+    max-height: 10dvh;
     margin-top: 10px;
     margin-bottom: 6px;
     margin-left: 10px;
@@ -908,4 +909,46 @@ input[type="number"] {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
+}
+
+@media (hover: none) {
+    .delete-msg-btn {
+        opacity: unset;
+    }
+}
+
+@media screen and (max-width: 290px) {
+    .assistant-container .delete-msg-btn::after {
+        content: unset;
+    }
+
+    .user-container .delete-msg-btn::before {
+        content: unset;
+    }
+}
+
+@media screen and (max-height: 500px) {
+    #chat-title {
+        height: 35px;
+    }
+}
+
+@media screen and (max-width: 510px){
+    #settings-modal {
+        max-width: unset;
+        height: 100dvh;
+        width: 100dvw;
+        border-radius: unset;
+        border: unset;
+        box-shadow: unset;
+        overflow-y: scroll;
+    }
+}
+
+@media screen and (max-height: 670px) {
+    #settings-modal {
+        border-radius: unset;
+        height: 100dvh;
+        overflow-y: scroll;
+    }
 }
