@@ -58,7 +58,7 @@ function setTheme(theme) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    let theme = localStorage.getItem('theme')
+    const theme = localStorage.getItem('theme')
 
     if (theme !== '') {
         setTheme(JSON.parse(theme))

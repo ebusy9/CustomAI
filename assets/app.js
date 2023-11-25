@@ -61,6 +61,11 @@ confirmDeleteBtn.addEventListener('click', deleteMessages)
 
 
 async function deleteMessages() {
+    // if (isChatInputDisabled) {
+    //     setErrMsOnInput('chadDisabled')
+    //     return
+    // }
+
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
@@ -85,6 +90,11 @@ async function deleteMessages() {
 
 
 async function deleteOneMessage(messageId) {
+    // if (isChatInputDisabled) {
+    //     setErrMsOnInput('chadDisabled')
+    //     return
+    // }
+
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
@@ -122,9 +132,11 @@ async function updateMessagesAndForm() {
         if (isChatInputDisabled) {
             return
         }
-
-        if (!infoModalDisplayed) {
+        
+        if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == false) {
             showRemainingMsgModal(responseData.remainingFreeMsg)
+        } else {
+            infoModalDisplayed = true
         }
 
         removeErrorMsgUpdateFailed()
@@ -135,11 +147,13 @@ async function updateMessagesAndForm() {
     }
 }
 
+
 function showRemainingMsgModal(remainingMsg) {
     infoModalDisplayed = true
     remainingMsgElement.innerHTML = remainingMsg
     infoModalElement.parentElement.style.display = 'flex'
 }
+
 
 function insertMessagesAndConfigureForm(response) {
     token.value = response.token
@@ -287,33 +301,45 @@ function messagesLoaded(response) {
 
     const assistantMessageContent = DOMPurify.sanitize(marked.parse(convertStringToHTMLEntities(response.assistantMessage.content)))
 
-    typeMessage(loadingMessageContentDiv, assistantMessageContent)
+    displayAssistantMessage(loadingMessageContentDiv, assistantMessageContent, assistantUuid)
 
     loadingMessageContentDiv.removeAttribute('id')
 }
 
 
-function typeMessage(loadingMessageContentDiv, assistantMessageContent) {
+function displayAssistantMessage(loadingMessageContentDiv, assistantMessageContent, assistantUuid) {
     loadingMessageContentDiv.innerHTML = assistantMessageContent
     highlightCodeInsideMessage(`#${loadingMessageContentDiv.id}`)
 
     const bottomPaddingElementHeight = setDivWidthWithContent(loadingMessageContentDiv)
 
-    if (!bottomPaddingElementHeight >= Math.floor(document.body.clientHeight * 0.92)) {
+    const shouldScroll = !(bottomPaddingElementHeight >= Math.floor(document.body.clientHeight * 0.92))
+    
+    if (shouldScroll) {
         messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     }
 
     const extractedText = extractTextBetweenTags(loadingMessageContentDiv)
 
-    type(loadingMessageContentDiv, extractedText, bottomPaddingElementHeight)
+    animateTyping(loadingMessageContentDiv, extractedText, bottomPaddingElementHeight, assistantUuid)
 
 }
 
 
-function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex = 0, textIndex = 0, cursor = null) {
+function animateTyping(loadingMessageContentDiv, extractedText, bottomPaddingHeight, assistantUuid, msgIndex = 0, textIndex = 0) {
     const message = extractedText[msgIndex]
     message.parentElement.style.display = null
     message.parentElement.parentNode.style.display = null
+
+    const messageFound = displayedMessages.find((message) => {
+        return message.uuid === assistantUuid
+    })
+
+    if(!messageFound){
+        isChatInputDisabled = false
+        bottomPaddingElement.style.height = null
+        return
+    }
 
     if (textIndex < message.textContent.length && message.textContent !== '\n') {
         message.textNode.textContent = message.textContent.slice(0, textIndex) + '█'
@@ -321,17 +347,17 @@ function type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgI
         textIndex += Math.floor(Math.random() * 5)
 
         setTimeout(() => {
-            type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex, textIndex, cursor)
+            animateTyping(loadingMessageContentDiv, extractedText, bottomPaddingHeight, assistantUuid, msgIndex, textIndex)
         }, Math.floor(Math.random() * 90))
 
         bottomPaddingElement.style.height = (bottomPaddingHeight + 32) - loadingMessageContentDiv.clientHeight + 'px'
 
     } else {
         message.textNode.textContent = message.textContent
-        if (typeof extractedText[msgIndex + 1] !== 'undefined') {
+        if (extractedText[msgIndex + 1]) {
 
             setTimeout(() => {
-                type(loadingMessageContentDiv, extractedText, bottomPaddingHeight, msgIndex + 1)
+                animateTyping(loadingMessageContentDiv, extractedText, bottomPaddingHeight, assistantUuid, msgIndex + 1)
             }, Math.floor(Math.random() * 90))
 
 
@@ -398,6 +424,7 @@ function addDeleteButton(messageId) {
     return deleteBtn
 }
 
+
 function uuidv4() {
     return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -413,28 +440,41 @@ function resize(messageInput) {
 
 function verifyConditionsBeforeStubmit(sentMessageContent) {
     if (isChatInputDisabled) {
-        chatInputDisabledMsg.style.display = 'block'
-        chatInputDisabledMsg.innerHTML = warningIcon + ' Please wait until the message is loaded...'
-        chatInput.style.border = '1px solid #DD4A48'
-        setTimeout(() => {
-            chatInputDisabledMsg.style.display = null
-            chatInput.style.border = null
-        }, 4500)
+        setErrMsOnInput('chadDisabled')
         return false
     }
 
     if (sentMessageContent.trim() === '') {
-        chatInputDisabledMsg.style.display = 'block'
-        chatInputDisabledMsg.innerHTML = warningIcon + ' The message should not be empty.'
-        chatInput.style.border = '1px solid #DD4A48'
-        setTimeout(() => {
-            chatInputDisabledMsg.style.display = null
-            chatInput.style.border = null
-        }, 4500)
+        setErrMsOnInput('inputEmpty')
         return false
     }
 
     return true
+}
+
+
+function setErrMsOnInput(err) {
+    switch (err) {
+        case 'inputEmpty':
+            chatInputDisabledMsg.style.display = 'block'
+            chatInputDisabledMsg.innerHTML = warningIcon + ' The message should not be empty.'
+            chatInput.style.border = '1px solid #DD4A48'
+            break
+
+        case 'chadDisabled':
+            chatInputDisabledMsg.style.display = 'block'
+            chatInputDisabledMsg.innerHTML = warningIcon + ' Please wait until the message finishes loading...'
+            chatInput.style.border = '1px solid #DD4A48'
+            break
+
+        default:
+            break
+    }
+
+    setTimeout(() => {
+        chatInputDisabledMsg.style.display = null
+        chatInput.style.border = null
+    }, 4500)
 }
 
 

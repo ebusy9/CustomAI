@@ -54,9 +54,11 @@ async function verifyKey(key) {
         if (responseData.keyStatus === 'valid') {
             hideAllIndicators()
             showIndicator(validIndicatorEl)
+            localStorage.setItem('isKeyValid', 1)
         } else {
             hideAllIndicators()
             showIndicator(invalidIndicatorEl)
+            localStorage.setItem('isKeyValid', 0)
         }
 
     } catch (error) {
