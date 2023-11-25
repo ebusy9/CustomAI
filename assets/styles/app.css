@@ -372,12 +372,17 @@ a {
 }
 
 #info-modal {
-    max-width: 350px;
+    max-width: 340px;
 }
 
 .info-modal-text-content {
     text-align: center;
     cursor: default;
+}
+
+.remaining-msg-wrapper {
+    font-weight: 600;
+    margin-top: 8px;
 }
 
 .info-modal-footer {
@@ -461,6 +466,7 @@ a {
     background-color: transparent;
     border: 1px solid var(--color-four);
     margin-left: 5px;
+    width: 100%;
 }
 
 #info-ok-btn:hover {
