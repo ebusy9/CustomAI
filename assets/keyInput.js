@@ -66,6 +66,9 @@ async function verifyKey(key) {
             hideAllIndicators()
             showIndicator(errorIndicatorEl)
             console.log('Error during key verification:', error)
+            setTimeout(() => {
+                verifyKey(key)
+            }, 1000)
         }
     }
 }

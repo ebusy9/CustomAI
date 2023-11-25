@@ -61,11 +61,6 @@ confirmDeleteBtn.addEventListener('click', deleteMessages)
 
 
 async function deleteMessages() {
-    // if (isChatInputDisabled) {
-    //     setErrMsOnInput('chadDisabled')
-    //     return
-    // }
-
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',
@@ -90,11 +85,6 @@ async function deleteMessages() {
 
 
 async function deleteOneMessage(messageId) {
-    // if (isChatInputDisabled) {
-    //     setErrMsOnInput('chadDisabled')
-    //     return
-    // }
-
     try {
         const response = await fetch(apiURL, {
             method: 'DELETE',

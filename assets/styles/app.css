@@ -34,6 +34,10 @@ button {
     font-family: 'AR One Sans', sans-serif;
 }
 
+a {
+    color: var(--color-four);
+}
+
 #chat-title {
     height: 7dvh;
     display: flex;
@@ -277,32 +281,6 @@ button {
 .modal-body .hint .hint-first-word {
     font-weight: 700;
 }
-
-/* #system-msg-hidden-hint-text {
-    display: none;
-    margin-bottom: 20px;
-    animation: fill 0.6s;
-    overflow: hidden;
-}
-
-#temperature-hidden-hint-text {
-    display: none;
-    overflow: hidden;
-}
-
-#show-system-msg-hint-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0px;
-    cursor: pointer;
-    animation: arrow-blink 2s ease-out infinite;
-}
-
-#show-system-msg-hint-btn svg {
-    height: 1.2rem;
-    fill: var(--color-four);
-} */
 
 .color-selectors {
     display: flex;
@@ -572,7 +550,6 @@ button {
     height: 1rem;
 }
 
-
 .date-container {
     display: flex;
 }
@@ -834,23 +811,6 @@ button {
     }
 }
 
-@keyframes arrow-blink {
-    0% {
-        translate: 0% -10%;
-        opacity: 50%;
-    }
-
-    50% {
-        translate: 0;
-        opacity: 100%;
-    }
-
-    100% {
-        translate: 0% -10%;
-        opacity: 50%;
-    }
-}
-
 @keyframes opacity {
     0% {
         opacity: 0%;
@@ -945,7 +905,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 }
 
-@media screen and (max-height: 670px) {
+@media screen and (max-height: 710px) {
     #settings-modal {
         border-radius: unset;
         height: 100dvh;

@@ -6,8 +6,6 @@ const confirmDeleteBtn = document.querySelector('#confirm-delete')
 const cancelDeleteBtn = document.querySelector('#cancel-delete')
 const deleteAllBtn = document.querySelector('#delete-chat-btn')
 const settingsBtn = document.querySelector('#settings-btn')
-// const sysMsgHintText = document.querySelector('#system-msg-hidden-hint-text')
-// const showHintBtn = document.querySelector('#show-system-msg-hint-btn')
 const infoOkBtn = document.querySelector('#info-ok-btn')
 
 
@@ -49,13 +47,6 @@ confirmDeleteBtn.addEventListener('click', () => {
 })
 
 
-// showHintBtn.addEventListener('click', (e) => {
-//     e.preventDefault()
-//     sysMsgHintText.style.display = 'block'
-//     showHintBtn.style.display = 'none'
-//     showHintBtn.querySelector('svg').style.display = 'none'
-// })
-
 infoOkBtn.addEventListener('click', () => {
     closeModal(infoModalElement)
 })
@@ -73,9 +64,6 @@ function openSettingsModal() {
 
 function closeModal(modal) {
     modal.parentElement.style.display = null
-    // sysMsgHintText.style.display = null
-    // showHintBtn.style.display = null
-    // showHintBtn.querySelector('svg').style.display = null
 }
 
 

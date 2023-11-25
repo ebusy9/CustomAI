@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Message;
-use App\Form\KeyVerificationType;
 use App\Form\MessageType;
 use App\Service\OpenAIService;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
