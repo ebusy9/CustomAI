@@ -80,7 +80,8 @@ function setTheme(theme) {
 document.addEventListener("DOMContentLoaded", () => {
     const theme = localStorage.getItem('theme')
 
-    if (theme !== '') {
+
+    if (theme !== '' && theme != null) {
         setTheme(JSON.parse(theme))
     }
 })

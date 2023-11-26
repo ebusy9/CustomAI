@@ -125,7 +125,7 @@ async function updateMessagesAndForm() {
 
         if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == true) {
             infoModalDisplayed = true
-        } else {
+        } else if(!infoModalDisplayed) {
             showRemainingMsgModal(responseData.remainingFreeMsg)
         }
 
