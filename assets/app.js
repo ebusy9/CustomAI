@@ -123,10 +123,10 @@ async function updateMessagesAndForm() {
             return
         }
 
-        if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == false) {
-            showRemainingMsgModal(responseData.remainingFreeMsg)
-        } else {
+        if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == true) {
             infoModalDisplayed = true
+        } else {
+            showRemainingMsgModal(responseData.remainingFreeMsg)
         }
 
         removeErrorMsgUpdateFailed()
