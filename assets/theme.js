@@ -3,33 +3,50 @@ const themeTwoBtn = document.querySelector('#theme-two')
 const themeThreeBtn = document.querySelector('#theme-three')
 const themeFourBtn = document.querySelector('#theme-four')
 const rootElement = document.querySelector(':root')
+
+
 const themeOne = {
+    backgroundColor: 'rgb(20, 28, 33)',
+    mainColor: 'rgb(15, 76, 117)',
+    secondaryColor: 'rgb(40, 110, 158)',
+    fontColor: 'rgb(225, 225, 250)',
+    fontColorTransparent: 'rgb(225, 225, 250, .5)',
+    redColor: 'rgb(221, 74, 72)',
+    greenColor: 'rgb(182, 227, 136)',
+    blueColor: 'rgb(47, 158, 224)'
+}
+
+const themeTwo = {
     backgroundColor: 'rgb(4, 13, 18)',
     mainColor: 'rgb(24, 61, 61)',
-    secondaryColor: 'rgb(92, 131, 116)',
+    secondaryColor: 'rgb(78, 111, 98)',
     fontColor: 'rgb(225, 225, 250)',
-    fontColorTransparent: 'rgb(225, 225, 250, .5)'
+    fontColorTransparent: 'rgb(225, 225, 250, .5)',
+    redColor: 'rgb(221, 74, 72)',
+    greenColor: 'rgb(182, 227, 136)',
+    blueColor: 'rgb(34, 116, 165)'
 }
-const themeTwo = {
-    backgroundColor: 'rgb(27, 38, 44)',
-    mainColor: 'rgb(15, 76, 117)',
-    secondaryColor: 'rgb(50, 130, 184)',
-    fontColor: 'rgb(225, 225, 250)',
-    fontColorTransparent: 'rgb(225, 225, 250, .5)'
-}
+
 const themeThree = {
-    backgroundColor: 'rgb(253, 232, 233)',
-    mainColor: 'rgb(84, 101, 255)',
-    secondaryColor: 'rgb(120, 139, 255)',
+    backgroundColor: 'rgb(255, 251, 245)',
+    mainColor: 'rgb(195, 172, 208)',
+    secondaryColor: 'rgb(236 226 214)',
     fontColor: 'rgb(39, 39, 39)',
-    fontColorTransparent: 'rgb(39, 39, 39, .5)'
+    fontColorTransparent: 'rgb(39, 39, 39, .5)',
+    redColor: 'rgb(200, 58, 58)',
+    greenColor: 'rgb(113, 158, 67)',
+    blueColor: 'rgb(19, 125, 189)'
 }
+
 const themeFour = {
     backgroundColor: 'rgb(233, 232, 253)',
     mainColor: 'rgb(133, 189, 191)',
-    secondaryColor: 'rgb(194, 252, 247)',
+    secondaryColor: 'rgb(176 231 226)',
     fontColor: 'rgb(4, 15, 15)',
-    fontColorTransparent: 'rgb(4, 15, 15, .5)'
+    fontColorTransparent: 'rgb(4, 15, 15, .5)',
+    redColor: 'rgb(200, 58, 58)',
+    greenColor: 'rgb(113, 158, 67)',
+    blueColor: 'rgb(19, 125, 189)'
 }
 
 themeOneBtn.addEventListener('click', () => {
@@ -54,6 +71,9 @@ function setTheme(theme) {
     rootElement.style.setProperty('--color-three', theme.secondaryColor)
     rootElement.style.setProperty('--color-four', theme.fontColor)
     rootElement.style.setProperty('--color-four-transparent', theme.fontColorTransparent)
+    rootElement.style.setProperty('--color-red', theme.redColor)
+    rootElement.style.setProperty('--color-green', theme.greenColor)
+    rootElement.style.setProperty('--color-blue', theme.blueColor)
     localStorage.setItem('theme', JSON.stringify(theme))
 }
 

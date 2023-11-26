@@ -1,12 +1,12 @@
 :root {
-    --color-one: rgb(4, 13, 18);
-    --color-two: rgb(24, 61, 61);
-    --color-three: rgb(92, 131, 116);
+    --color-one: rgb(20, 28, 33);
+    --color-two: rgb(15, 76, 117);
+    --color-three: rgb(40, 110, 158);
     --color-four: rgb(225, 225, 250);
     --color-four-transparent: rgb(225, 225, 250, .5);
-    --color-red: #DD4A48;
-    --color-green: #B6E388;
-    --color-blue: #2274A5;
+    --color-red: rgb(221, 74, 72);
+    --color-green: rgb(182, 227, 136);
+    --color-blue: rgb(47, 158, 224);
 }
 
 body {
@@ -58,6 +58,7 @@ a {
 
 #app-logo {
     height: 70%;
+    fill: var(--color-two);
 }
 
 #title-text {
@@ -308,11 +309,11 @@ a {
 }
 
 #theme-one {
-    background-color: rgb(4, 13, 18);
+    background-color: rgb(20, 28, 33);
 }
 
 #theme-one .color-two {
-    background-color: rgb(24, 61, 61);
+    background-color: rgb(15, 76, 117);
 }
 
 #theme-one .color-four {
@@ -320,15 +321,15 @@ a {
 }
 
 #theme-one .color-three {
-    background-color: rgb(92, 131, 116);
+    background-color: rgb(40, 110, 158);
 }
 
 #theme-two {
-    background-color: rgb(27, 38, 44);
+    background-color: rgb(4, 13, 18);
 }
 
 #theme-two .color-two {
-    background-color: rgb(15, 76, 117);
+    background-color: rgb(24, 61, 61);
 }
 
 #theme-two .color-four {
@@ -336,15 +337,15 @@ a {
 }
 
 #theme-two .color-three {
-    background-color: rgb(50, 130, 184);
+    background-color: rgb(78, 111, 98);
 }
 
 #theme-three {
-    background-color: rgb(253, 232, 233);
+    background-color: rgb(255, 251, 245);
 }
 
 #theme-three .color-two {
-    background-color: rgb(84, 101, 255);
+    background-color: rgb(195, 172, 208);
 }
 
 #theme-three .color-four {
@@ -352,7 +353,7 @@ a {
 }
 
 #theme-three .color-three {
-    background-color: rgb(120, 139, 255);
+    background-color: rgb(236 226 214);
 }
 
 #theme-four {
@@ -368,7 +369,7 @@ a {
 }
 
 #theme-four .color-three {
-    background-color: rgb(194, 252, 247);
+    background-color: rgb(176 231 226);
 }
 
 #info-modal {

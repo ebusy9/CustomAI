@@ -122,7 +122,7 @@ async function updateMessagesAndForm() {
         if (isChatInputDisabled) {
             return
         }
-        
+
         if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == false) {
             showRemainingMsgModal(responseData.remainingFreeMsg)
         } else {
@@ -241,7 +241,7 @@ function messagesLoading(messageSentContent) {
                 <div class="message-content" id="loading-message-content"><img src="${loadingGifPath}"></div>
             </div>
             <div class="date-container">
-                <div class="date" id="loading-date"><img src="${loadingGifPath}"></div>
+                <div class="date" id="loading-date">Loading...</div>
             </div>
         </div>`)
 
@@ -304,7 +304,7 @@ function displayAssistantMessage(loadingMessageContentDiv, assistantMessageConte
     const bottomPaddingElementHeight = setDivWidthWithContent(loadingMessageContentDiv)
 
     const shouldScroll = !(bottomPaddingElementHeight >= Math.floor(document.body.clientHeight * 0.92))
-    
+
     if (shouldScroll) {
         messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
     }
@@ -325,7 +325,7 @@ function animateTyping(loadingMessageContentDiv, extractedText, bottomPaddingHei
         return message.uuid === assistantUuid
     })
 
-    if(!messageFound){
+    if (!messageFound) {
         isChatInputDisabled = false
         bottomPaddingElement.style.height = null
         return
@@ -506,7 +506,8 @@ function warningMsgFormSubmitFailed(isInfoMessage = false) {
         assistantContainerDate.innerHTML = warningIcon + ' CustomAI | ' + getFormattedDate()
     }
 
-    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight })
+    loadingAssistantContainer.style.display = null
+    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth'})
 }
 
 
