@@ -1,7 +1,7 @@
 # CustomAI 🤖
 
 Welcome to CustomAI, your friendly chat companion powered by the magic of OpenAI! 🚀 <br>
-Check out the live application: [CustomAI](https://evgenii-customai.projets.garage404.com/)🌐<br>
+Check out the live application: [CustomAI](https://customai.evgenii.fr/)🌐<br>
 
 ![CustomAI-preview](https://i.imgur.com/x3sFdEx.png)
 
