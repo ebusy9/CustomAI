@@ -16,6 +16,7 @@ body {
     color: var(--color-four);
     font-family: 'AR One Sans', sans-serif;
     font-size: 16px;
+    overflow: hidden;
 }
 
 textarea {
