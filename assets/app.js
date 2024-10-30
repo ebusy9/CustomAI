@@ -6,7 +6,7 @@ import './scrollToBottom.js';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
 
-const apiURL = 'api/gpt'
+const apiURL = 'gpt'
 const chatEl = document.querySelector('#chat')
 const submitBtn = document.querySelector('#sub-btn')
 const token = document.querySelector('#token')

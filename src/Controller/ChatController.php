@@ -42,7 +42,7 @@ class ChatController extends AbstractController
     }
 
 
-    #[Route('/api/gpt', name: 'api_pgt', methods: ['GET', 'POST', 'DELETE'])]
+    #[Route('/gpt', name: 'api_pgt', methods: ['GET', 'POST', 'DELETE'])]
     public function gpt(Request $request, EntityManagerInterface $entityManager, OpenAIService $openAIService): Response
     {
         $message = new Message();
