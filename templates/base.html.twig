@@ -20,6 +20,7 @@
 	<body>
 		{% block body %}{% endblock %}
 		{% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
 			{{ importmap() }}
 			<script src="{{ asset('theme.js')}}"></script>
 			<script src="{{ asset('purify.min.js')}}"></script>
