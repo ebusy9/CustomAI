@@ -1,4 +1,10 @@
-import hljs from 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js'
+import './modal.js';
+import './keyInput.js';
+import './purify.min.js';
+import './theme.js';
+import './scrollToBottom.js';
+import { marked } from 'marked';
+import hljs from 'highlight.js';
 
 const apiURL = 'api/gpt'
 const chatEl = document.querySelector('#chat')
@@ -124,7 +130,7 @@ async function updateMessagesAndForm() {
 
         if (!infoModalDisplayed && localStorage.getItem('isKeyValid') == true) {
             infoModalDisplayed = true
-        } else if(!infoModalDisplayed) {
+        } else if (!infoModalDisplayed) {
             showRemainingMsgModal(responseData.remainingFreeMsg)
         }
 
@@ -506,7 +512,7 @@ function warningMsgFormSubmitFailed(isInfoMessage = false) {
     }
 
     loadingAssistantContainer.style.display = null
-    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth'})
+    messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' })
 }
 
 
