@@ -557,8 +557,8 @@ a {
 #loading-message-content {
     color: transparent !important;
     position: relative;
-    height: 22px;
-    width: 22px;
+    min-height: 22px;
+    min-width: 22px;
 }
 
 #loading-message-content::after {
