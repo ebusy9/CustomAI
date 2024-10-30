@@ -1,6 +1,5 @@
 <?php
     $file = __DIR__ . '/../public/' . $_SERVER['SCRIPT_NAME'];
-    dd($_SERVER['SCRIPT_NAME']);
 
     $path_parts = pathinfo($file);
     $extension = $path_parts['extension'];
